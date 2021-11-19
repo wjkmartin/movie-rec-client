@@ -15,6 +15,9 @@ export const movieAPI = createApi({
             title
             id
             IMDB_ID
+            popularity
+            overview
+            release_date
           }
         }
       `,
