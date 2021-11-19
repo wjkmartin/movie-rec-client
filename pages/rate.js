@@ -4,6 +4,7 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 
 import MovieBlock from '../components/_Rate/MovieBlock/MovieBlock';
+import RateButtons from '../components/_Rate/RateButtons/RateButtons';
 
 export default function Rate() {
   const [hasStartedRating, setHasStartedRating] = useState(false);
@@ -27,7 +28,12 @@ export default function Rate() {
           Show me some movies
         </button>
         <div>
-          {hasStartedRating ? (<MovieBlock />) : null}
+          {hasStartedRating ? (
+            <div>
+              <MovieBlock />
+              <RateButtons />
+            </div>
+          ) : null}
         </div>
       </main>
     </div>

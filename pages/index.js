@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
+import SignInScreen from '../components/Auth/Auth'
+
 export default function Home() {
   return (
     <div className={styles.container}>
@@ -10,11 +12,12 @@ export default function Home() {
         <meta name="description" content="Find the next movie that will change everything" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main className={styles.main}>
         <div>
           <Link href="/rate">Start Rating</Link>
         </div>
+        <SignInScreen />
+        
       </main>
 
     </div>
