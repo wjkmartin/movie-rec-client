@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
-import { movieAPI } from './services/movie';
+import { movieAPI } from './services/rate/movie';
 import  authSlice  from './components/Auth/authSlice';
 import rateSlice from './components/_Rate/rateSlice';
 

@@ -20,20 +20,21 @@ export default function Rate() {
       </Head>
 
       <main className={styles.main}>
-        <button
-          onClick={() => {
-            setHasStartedRating(true);
-          }}
-        >
-          Show me some movies
-        </button>
         <div>
           {hasStartedRating ? (
             <div>
               <MovieBlock />
               <RateButtons />
             </div>
-          ) : null}
+          ) : (
+            <button
+              onClick={() => {
+                setHasStartedRating(true);
+              }}
+            >
+              Show me some movies
+            </button>
+          )}
         </div>
       </main>
     </div>
