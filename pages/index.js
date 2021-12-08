@@ -19,7 +19,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div>
-          <Link passHref  href="/rec">
+          <Link passHref  href="/recommend">
             <button className={styles.mainButton}>REC</button>
           </Link>
           <Link passHref className={styles.mainButton} href="/rate">

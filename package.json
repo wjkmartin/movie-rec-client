@@ -10,6 +10,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.2",
     "@rtk-query/graphql-request-base-query": "^1.0.3",
+    "firebase": "^9.4.1",
     "firebase-admin": "^10.0.0",
     "firebaseui": "^6.0.0",
     "graphql-request": "^3.6.1",

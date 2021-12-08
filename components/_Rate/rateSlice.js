@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isRating: false,
-  ratingMovieIMDBID: null,
+  ratingMovieID: null,
   didRate: false,
 };
 
@@ -13,8 +13,8 @@ const rateSlice = createSlice({
     setRating: (state, action) => {
       state.isRating = action.payload;
     },
-    setRatingMovieIMDBID: (state, action) => {
-      state.ratingMovieIMDBID = action.payload;
+    setRatingMovieID: (state, action) => {
+      state.ratingMovieID = action.payload;
     },
     setDidRate: (state, action) => {
       state.didRate = action.payload;
@@ -22,5 +22,5 @@ const rateSlice = createSlice({
   },
 });
 
-export const { setRating, setRatingMovieIMDBID, setDidRate } = rateSlice.actions;
+export const { setRating, setRatingMovieID, setDidRate } = rateSlice.actions;
 export default rateSlice;

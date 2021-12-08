@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image'
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetMovieRandomQuery } from '../../../services/rate/movie';
 import rateSlice from '../rateSlice';
@@ -19,8 +20,8 @@ const MovieBlock = () => {
     }
     if (query.isSuccess) {
       setIsLoading(false);
-      setMovieData(query.data.getRandomMovie);
-      dispatch(rateSlice.actions.setRatingMovieIMDBID(query.data.getRandomMovie.IMDB_ID));
+      setMovieData(query.data.getMovie);
+      dispatch(rateSlice.actions.setRatingMovieID(query.data.getMovie.id));
     }
   }, [query, didRate, dispatch]);
 
@@ -33,15 +34,15 @@ const MovieBlock = () => {
           </h1>
         </div>
         <div className="movie-block__rating">
-          {/* <h2>{movieData?.popularity}</h2> */}
+          <h2>{movieData?.popularity}</h2>
         </div>
       </div>
       <div className="movie-block__body">
         <div className="movie-block__poster">
-          {/* <img src={`https://http://img.omdbapi.com/?i=${movie.IMDB_ID}&h=600&apikey=${API_KEY}`} alt="poster" /> */}
+          <Image width="500px" height="750px" src={`https://image.tmdb.org/t/p/w500${movieData?.poster_path}`} alt="poster" />
         </div>
         <div className="movie-block__description">
-          {/* <p>{movieData?.overview}</p> */}
+          <p>{movieData?.overview}</p>
         </div>
       </div>
     </div>

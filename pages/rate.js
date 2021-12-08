@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { useSelector } from 'react-redux';
 
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
@@ -8,6 +10,12 @@ import RateButtons from '../components/_Rate/RateButtons/RateButtons';
 
 export default function Rate() {
   const [hasStartedRating, setHasStartedRating] = useState(false);
+
+  useEffect(() => {
+    // get user index in users by uid
+    
+  }), []
+
   return (
     <div className={styles.container}>
       <Head>

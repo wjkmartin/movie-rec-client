@@ -1,25 +1,71 @@
 import React, { useEffect } from 'react';
 
-import firebase from 'firebase/compat/app'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import 'firebase/compat/auth';
-
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+} from 'firebase/firestore';
+import {
+  GoogleAuthProvider,
+  getAuth,
+  User as FirebaseUser,
+} from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import authSlice from './authSlice';
+import { getApps, initializeApp } from 'firebase/app';
+import firebaseConfig from '../../secrets/firebaseConfig';
 
-const CLIENT_CONFIG = {
-  apiKey: 'AIzaSyDfS2WUx_2jPyMQ7Q6_5t9_aFWpKRITzfA',
-  authDomain: 'movieapp-38e91.firebaseapp.com',
-  projectId: 'movieapp-38e91',
-  storageBucket: 'movieapp-38e91.appspot.com',
-  messagingSenderId: '635062094244',
-  appId: '1:635062094244:web:b036adf7cf1f09ec6dd931',
-  databaseURL: 'https://movieapp-38e91-default-rtdb.firebaseio.com/',
-  measurementId: 'G-HX65N7087E',
-};
-firebase.initializeApp(CLIENT_CONFIG);
+if (!getApps.length) {
+  createFirebaseApp(firebaseConfig);
+}
+
+function createFirebaseApp(config) {
+  if (!getApps.length) {
+    console.log('Firebase app not initialized. Initializing...');
+    initializeApp(config);
+  } else {
+    console.log('App already initialized');
+  }
+}
+
+function getDocsWithUserID(uid) {
+  const db = getFirestore();
+  const users = collection(db, 'Users');
+  const q = query(users, where('uid', '==', uid));
+  return getDocs(q);
+}
+
+function getAllUserDocs() {
+  const db = getFirestore();
+  const users = collection(db, 'Users');
+  const q = query(users);
+  return getDocs(q);
+}
+
+async function assignNewUserToCollection(uid, cb) {
+  const db = getFirestore();
+  const users = collection(db, 'Users');
+  getAllUserDocs().then((snapshot) => {
+    const user = {
+      userIndex: snapshot.docs.length + 1,
+      uid: uid,
+      age: '',
+      gender: '',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    addDoc(users, user);
+    cb(snapshot.docs.length + 1);
+  });
+}
 
 function SignInScreen() {
+  const dispatch = useDispatch();
+
   const uiConfig = {
     // Popup signin flow rather than redirect flow.
     signInFlow: 'popup',
@@ -29,35 +75,41 @@ function SignInScreen() {
     },
     // We will display Google and Facebook as auth providers.
     signInOptions: [
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      GoogleAuthProvider.PROVIDER_ID,
       // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
     ],
   };
-  const [user, setUser] = React.useState(firebase.User);
+
+  const [user, setUser] = React.useState(FirebaseUser);
   const isSignedIn = useSelector((state) => state.auth.isSignedIn);
-  const dispatch = useDispatch();
   useEffect(() => {
-     firebase.auth().onAuthStateChanged( (user) => {
+    function setUserIndexIdLocal(userIndex) {
+      console.log(userIndex);
+      dispatch(authSlice.actions.setUserIndexIdentifier(userIndex));
+    }
+
+    getAuth().onAuthStateChanged((user) => {
       if (user) {
-        // const token =  user.getIdToken();
         setUser(user);
-        dispatch(authSlice.actions.setUserID(user.multiFactor.user.uid));
+        dispatch(authSlice.actions.setUserID(user.uid));
         dispatch(authSlice.actions.isSignedIn(true));
-      } else {
-        setUser(null);
+        getDocsWithUserID(user.uid).then((snapshot) => {
+          if (snapshot.docs.length === 0) {
+            assignNewUserToCollection(user.uid, setUserIndexIdLocal);
+          } else {
+            setUserIndexIdLocal(snapshot.docs[0].data().userIndex);
+          }
+        });
+
         return;
       }
-
     });
   }, [dispatch]);
   return isSignedIn ? (
-    <div> Signed In </div>
+    <div> Signed In as {user?.uid}</div>
   ) : (
     <div>
-      <StyledFirebaseAuth
-        uiConfig={uiConfig}
-        firebaseAuth={firebase.auth()}
-      />
+      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={getAuth()} />
     </div>
   );
 }
