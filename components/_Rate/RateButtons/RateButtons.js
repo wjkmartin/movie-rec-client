@@ -1,20 +1,48 @@
 import React from 'react';
-import { useAddRatingMutation } from '../../../services/rate/rating';
+
 import { useSelector, useDispatch } from 'react-redux';
 import rateSlice from '../rateSlice';
+
+import { gql, useMutation } from '@apollo/client';
 
 export default function RateButtons() {
   const movieID = useSelector((state) => state.rate.ratingMovieID);
   const userID = useSelector((state) => state.auth.userID);
   const dispatch = useDispatch();
-  const [addRating, { isLoading }] = useAddRatingMutation();
+
+  const ADD_RATING = gql`
+    mutation AddMovieRating(
+      $userId: Int!
+      $movieId: Int!
+      $rating: Int!
+    ) {
+      addMovieRating(userId: $userId, id: $movieId, rating: $rating) {
+        userId
+        id
+        rating
+      }
+    }
+  `;
+
+  const [addMovieRating, { data, loading, error }] = useMutation(ADD_RATING);
+  
+  if (error) {
+    console.log(error);
+  }
+
+
 
   function writeUserData(userID, rating) {
     try {
-      addRating({userId: 1, movieId: movieID, rating: rating});
-    }
-    catch (error) {
-      console.log(error);  
+      addMovieRating({
+        variables: {
+          userId: userID,
+          movieId: movieID,
+          rating: rating,
+        },
+      });
+    } catch (error) {
+      console.log(error);
     }
   }
 

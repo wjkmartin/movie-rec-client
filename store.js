@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { movieAPI } from './services/rate/movie';
-import { ratingAPI } from './services/rate/rating';
 import authSlice from './components/Auth/authSlice';
 import rateSlice from './components/_Rate/rateSlice';
 
@@ -9,7 +8,6 @@ export const store = configureStore({
   reducer: {
     // Add the generated reducer as a specific top-level slice
     [movieAPI.reducerPath]: movieAPI.reducer,
-    [ratingAPI.reducerPath]: ratingAPI.reducer,
     auth: authSlice.reducer,
     rate: rateSlice.reducer,
   },
@@ -17,7 +15,7 @@ export const store = configureStore({
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
-    .concat(ratingAPI.middleware).concat(movieAPI.middleware)
+    .concat(movieAPI.middleware)
 });
 
 setupListeners(store.dispatch);
