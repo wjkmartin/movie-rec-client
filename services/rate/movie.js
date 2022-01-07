@@ -13,23 +13,21 @@ export const movieAPI = createApi({
   reducerPath: 'movieAPI',
   baseQuery: staggeredBaseQuery,
   endpoints: (builder) => ({
-    getMovieRandom: builder.query({
+    getNextMovieToRate: builder.query({
       query: () => ({
         document: gql`
-          query {
-            getMovie {
-              title
+          query Query($userId: Int!) {
+            getMovie(userId: $userId) {
               id
-              popularity
-              overview
-              release_date
-              poster_path
             }
           }
         `,
+        variables: {
+          userId: 1, // TODO: pull user index id from redux
+        },
       }),
     }),
   }),
 });
 
-export const { useGetMovieRandomQuery } = movieAPI;
+export const { useGetNextMovieToRateQuery } = movieAPI;

@@ -4,6 +4,7 @@ const initialState = {
   isRating: false,
   ratingMovieID: null,
   didRate: false,
+  ratedMoviesByID: [],
 };
 
 const rateSlice = createSlice({
@@ -18,7 +19,11 @@ const rateSlice = createSlice({
     },
     setDidRate: (state, action) => {
       state.didRate = action.payload;
+    },
+    setRatedMoviesByID: (state, action) => {
+      state.ratedMoviesByID = action.payload;
     }
+
   },
 });
 

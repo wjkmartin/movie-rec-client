@@ -1,29 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image'
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetMovieRandomQuery } from '../../../services/rate/movie';
-import rateSlice from '../rateSlice';
 
-const MovieBlock = () => {
-  const query = useGetMovieRandomQuery();
-  const [movieData, setMovieData] = React.useState(null);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [isError, setIsError] = React.useState(false);
 
-  const didRate = useSelector((state) => state.rate.didRate);
-  const dispatch = useDispatch();
+const MovieBlock = (props) => {
+  const [movieData, setMovieData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    if (didRate) {
-      dispatch(rateSlice.actions.setDidRate(false));
-      query.refetch();
-    }
-    if (query.isSuccess) {
+    if (props.data) {
+      setMovieData(props.data);
       setIsLoading(false);
-      setMovieData(query.data.getMovie);
-      dispatch(rateSlice.actions.setRatingMovieID(query.data.getMovie.id));
     }
-  }, [query, didRate, dispatch]);
+  }, [props.data]);
 
   const movie = (
     <div className="movie-block">
@@ -47,7 +37,7 @@ const MovieBlock = () => {
       </div>
     </div>
   );
-  return <>{isLoading ? <div>Loading...</div> : movie}</>;
+  return <>{isLoading ? <div>Loading movie data...</div> : movie}</>;
 };
 
 export default MovieBlock;

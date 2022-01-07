@@ -1,23 +1,71 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useGetNextMovieToRateQuery } from '../services/rate/movie';
+import rateSlice from '../components/_Rate/rateSlice';
 
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import commonStyles from '../styles/common.module.css';
+import styles from '../styles/Rate.module.css';
 
-import MovieBlock from '../components/_Rate/MovieBlock/MovieBlock';
+import {
+  getFirestore,
+  query,
+  collection,
+  where,
+  getDocs,
+} from 'firebase/firestore';
+
+import MovieBlock from '../components/common/MovieBlock';
 import RateButtons from '../components/_Rate/RateButtons/RateButtons';
+import { getMovieData } from '../services/rec/tmdb';
 
 export default function Rate() {
   const [hasStartedRating, setHasStartedRating] = useState(false);
 
+  const movieQuery = useGetNextMovieToRateQuery();
+  const [movieData, setMovieData] = useState(null);
+  const [foundUnratedMovie, setFoundUnratedMovie] = useState(false);
+
+  const db = getFirestore();
+
+  const dispatch = useDispatch();
+  const didRate = useSelector((state) => state.rate.didRate);
+
   useEffect(() => {
-    // get user index in users by uid
-    
-  }), []
+    const checkIfRated = async (q) => {
+      await getDocs(q).then((res) => {
+        if (res.docs.length > 0) {
+          dispatch(rateSlice.actions.setDidRate(true));
+        } else {
+          setFoundUnratedMovie(true);
+        }
+      });
+    };
+
+    if (didRate) {
+      dispatch(rateSlice.actions.setDidRate(false));
+      movieQuery.refetch();
+    } else if (movieQuery.isSuccess) {
+      console.log('movieQuery.data', movieQuery.data);
+      const ratingsQuery = query(
+        collection(db, 'Ratings'),
+        where('tmdb_id', '==', movieQuery.data.getMovie.id)
+      );
+      checkIfRated(ratingsQuery);
+    }
+
+    if (foundUnratedMovie) {
+      getMovieData(movieQuery.data.getMovie.id).then((res) => {
+        setMovieData(res.data);
+      });
+      dispatch(rateSlice.actions.setRatingMovieID(movieQuery.data.getMovie.id));
+    }
+  }, [movieQuery, didRate, dispatch, db, foundUnratedMovie]);
+  // get user index in users by uid
 
   return (
-    <div className={styles.container}>
+    <div className={commonStyles.container}>
       <Head>
         <title>MovieApp</title>
         <meta
@@ -27,23 +75,22 @@ export default function Rate() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <div>
-          {hasStartedRating ? (
-            <div>
-              <MovieBlock />
-              <RateButtons />
-            </div>
-          ) : (
-            <button
-              onClick={() => {
-                setHasStartedRating(true);
-              }}
-            >
-              Show me some movies
-            </button>
-          )}
-        </div>
+      <main className={commonStyles.main}>
+        {hasStartedRating ? (
+          <div>
+            <MovieBlock data={movieData} />{' '}
+            {/* REFACTOR TO PRESENTATIONAL COMPONENT ONLY */}
+            <RateButtons />
+          </div>
+        ) : (
+          <button
+            onClick={() => {
+              setHasStartedRating(true);
+            }}
+          >
+            Show me some movies
+          </button>
+        )}
       </main>
     </div>
   );

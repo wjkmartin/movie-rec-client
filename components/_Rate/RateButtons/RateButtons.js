@@ -5,6 +5,8 @@ import rateSlice from '../rateSlice';
 
 import { gql, useMutation } from '@apollo/client';
 
+import styles from "./RateButtons.module.css";
+
 export default function RateButtons() {
   const movieID = useSelector((state) => state.rate.ratingMovieID);
   const userID = useSelector((state) => state.auth.userID);
@@ -52,22 +54,22 @@ export default function RateButtons() {
   }
 
   return (
-    <div>
-      <button
+    <div className={styles.RateButtons}>
+      <button className={styles.rateButton}
         onClick={() => {
           handleClick(1);
         }}
       >
         Thumb up
       </button>
-      <button
+      <button className={styles.rateButton}
         onClick={() => {
           handleClick(2);
         }}
       >
         Love
       </button>
-      <button
+      <button className={styles.rateButton}
         onClick={() => {
           handleClick(-1);
         }}
