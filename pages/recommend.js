@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getDatabase, ref, get, child } from 'firebase/database';
+import { useSelector } from 'react-redux';
 import { getMovieData } from '../services/rec/tmdb';
 import MovieBlock from '../components/common/MovieBlock';
 
 import { gql, useQuery } from '@apollo/client';
 
-import Head from 'next/head';
-import commonstyles from '../styles/common.module.css';
+import commonStyles from '../styles/common.module.css';
 import styles from '../styles/Rec.module.css';
 
 import Image from 'next/image';
@@ -44,17 +42,14 @@ export default function Recommend() {
   });
 
   const handleNextButton = () => {
-    console.log(recommendationIndex, '/', recommendations.length);
     if (recommendationIndex >= recommendations.length - 1) {
       setRecommendationIndex(0);
     } else setRecommendationIndex(recommendationIndex + 1);
   };
 
   const handlePrevButton = () => {
-    console.log(recommendationIndex, '/', recommendations.length);
     if (recommendationIndex === 0) {
       setRecommendationIndex(recommendations.length - 1);
-      console.log(recommendationIndex, '/', recommendations.length);
     } else setRecommendationIndex(recommendationIndex - 1);
   };
 
@@ -66,8 +61,6 @@ export default function Recommend() {
 
   useEffect(() => {
     setRecommendations([]);
-    console.log(recommendationIndex, '/', recommendations.length);
-
     if (data) {
       const prefsFull = [...data.getPrefscores];
 
@@ -102,22 +95,20 @@ export default function Recommend() {
   }, [data, recommendationIndex]);
 
   return (
-    <div className={commonstyles.container}>
-      <main className={styles.main}>
+      <main className={commonStyles.main}>
         {loading ? (
-          <div>
+          <div className={styles.loadingBlock}>
             <Image
-              className={commonstyles.loadingIcon}
+              className={commonStyles.loadingIcon}
               height="75px"
               width="75px"
               src="/loadingIcon.png"
               alt="loading"
             />
-            <p>🤖 Running the model for the freshest recs</p>
+            <p>Running the model for the freshest recs</p>
           </div>
         ) : (
           <div className={styles.contentContainer}>
-            <h1 className={styles.title}>Recommendations</h1>
             <MovieBlock data={recommendations[recommendationIndex]} />
             <button onClick={() => handlePrevButton()}> Prev </button>
             <button> Seen it! </button>{' '}
@@ -130,6 +121,5 @@ export default function Recommend() {
           </div>
         )}
       </main>
-    </div>
   );
 }

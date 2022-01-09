@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useGetNextMovieToRateQuery } from '../services/rate/movie';
 import rateSlice from '../components/_Rate/rateSlice';
 
-import Head from 'next/head';
 import commonStyles from '../styles/common.module.css';
 import styles from '../styles/Rate.module.css';
 
@@ -65,19 +64,9 @@ export default function Rate() {
   // get user index in users by uid
 
   return (
-    <div className={commonStyles.container}>
-      <Head>
-        <title>MovieApp</title>
-        <meta
-          name="description"
-          content="Find the next movie that will change everything"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <main className={commonStyles.main}>
         {hasStartedRating ? (
-          <div>
+          <div className={styles.movieBlockContainer}>
             <MovieBlock data={movieData} />{' '}
             {/* REFACTOR TO PRESENTATIONAL COMPONENT ONLY */}
             <RateButtons />
@@ -92,6 +81,5 @@ export default function Rate() {
           </button>
         )}
       </main>
-    </div>
   );
 }

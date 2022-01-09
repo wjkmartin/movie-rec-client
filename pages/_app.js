@@ -2,6 +2,7 @@ import { store } from '../store';
 import '../styles/globals.css';
 import { Provider } from 'react-redux';
 import Header from '../components/Header/Header';
+import Head from 'next/head';
 
 import {
   ApolloClient,
@@ -21,7 +22,15 @@ function MyApp({ Component, pageProps }) {
     <ApolloProvider client={client}>
       <Provider store={store}>
         <Header />
-        <Component {...pageProps} />)
+        <Head>
+        <title>MovieApp</title>
+        <meta
+          name="description"
+          content="Find the next movie that will change everything"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+        <Component {...pageProps} />
       </Provider>
     </ApolloProvider>
   );

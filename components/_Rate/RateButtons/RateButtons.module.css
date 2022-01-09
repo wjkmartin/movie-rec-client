@@ -1,14 +1,25 @@
 .RateButtons {
-        display: flex;
-        justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .rateButton {
-    margin: 0 1rem;
-    padding: 0.5rem;
-    border: 1px solid #000;
-    border-radius: 0.5rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
+  border: 1px solid #000;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.rateButtonRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.rateButton__fullWidth {
+  width: 100%;
+}
+
+.rateButton__halfWidth {
+  width: 50%;
 }

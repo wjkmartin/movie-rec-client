@@ -4,28 +4,10 @@
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
     color: #333;
     display: flex;
-    text-decoration: none;
-    list-style: none;
-    font-size: 14px;
+    align-items: center;
     height: 56px;
-    line-height: 56px;
-    padding: 0 20px;
-    position: relative;
-    z-index: 1;
     justify-content: center;
+    font-family: 'Oswald', sans-serif;
 }
 
-.Header > a {
-    color: #333;
-    display: block;
-    text-decoration: none;
-    list-style: none;
-    font-size: 14px;
-    height: 56px;
-    line-height: 56px;
-    padding: 0 20px;
-    position: relative;
-    z-index: 1;
-    font-weight: 600;
-}
 

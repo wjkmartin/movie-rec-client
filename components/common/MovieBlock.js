@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image'
 import { useDispatch, useSelector } from 'react-redux';
+import styles from "../../styles/movieBlockShared.module.css";
 
 
 const MovieBlock = (props) => {
@@ -16,7 +17,7 @@ const MovieBlock = (props) => {
   }, [props.data]);
 
   const movie = (
-    <div className="movie-block">
+    <div className={styles.MovieBlock}>
       <div className="movie-block__header">
         <div className="movie-block__title">
           <h1>
@@ -27,7 +28,7 @@ const MovieBlock = (props) => {
           <h2>{movieData?.popularity}</h2>
         </div>
       </div>
-      <div className="movie-block__body">
+      <div className={styles.movieBlock__body}>
         <div className="movie-block__poster">
           <Image width="500px" height="750px" src={`https://image.tmdb.org/t/p/w500${movieData?.poster_path}`} alt="poster" />
         </div>
