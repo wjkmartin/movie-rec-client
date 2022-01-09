@@ -97,7 +97,7 @@ export default function Recommend() {
   return (
       <main className={commonStyles.main}>
         {loading ? (
-          <div className={styles.loadingBlock}>
+          <div className={commonStyles.loadingBlock}>
             <Image
               className={commonStyles.loadingIcon}
               height="75px"
@@ -108,7 +108,7 @@ export default function Recommend() {
             <p>Running the model for the freshest recs</p>
           </div>
         ) : (
-          <div className={styles.contentContainer}>
+          <>
             <MovieBlock data={recommendations[recommendationIndex]} />
             <button onClick={() => handlePrevButton()}> Prev </button>
             <button> Seen it! </button>{' '}
@@ -118,7 +118,7 @@ export default function Recommend() {
             {recommendations.map((rec, i) => (
               <p key={`movierec${i}`}>{rec.original_title}</p>
             ))}
-          </div>
+          </>
         )}
       </main>
   );

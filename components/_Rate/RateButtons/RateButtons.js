@@ -48,31 +48,33 @@ export default function RateButtons() {
   }
 
   return (
-    <div>
+    <div className={styles.RateButtons}>
       <button
         className={`${styles.rateButton} ${styles.rateButton__fullWidth}`}
         onClick={() => {
-          handleClick(2);
+          handleClick(5);
         }}
       >
-        Love
+        <span className={styles.rateButton__text}>Love it! (⬆)</span>
       </button>
       <div className={styles.rateButtonRow}>
-        <button
-          className={`${styles.rateButton} ${styles.rateButton__halfWidth}`}
-          onClick={() => {
-            handleClick(-1);
-          }}
-        >
-          Thumb down
-        </button>
         <button
           className={`${styles.rateButton} ${styles.rateButton__halfWidth}`}
           onClick={() => {
             handleClick(1);
           }}
         >
-          Thumb up
+          <span className={styles.rateButton__text}>
+            (⬅) Didn&apos;t like it{' '}
+          </span>
+        </button>
+        <button
+          className={`${styles.rateButton} ${styles.rateButton__halfWidth}`}
+          onClick={() => {
+            handleClick(3);
+          }}
+        >
+          <span className={styles.rateButton__text}>Liked it (➡) </span>
         </button>
       </div>
       <button
@@ -81,7 +83,9 @@ export default function RateButtons() {
           dispatch(rateSlice.actions.setDidRate(true));
         }}
       >
-        Haven&apos;t seen
+        <span className={styles.rateButton__text}>
+          Haven&apos;t seen it yet (⬇){' '}
+        </span>
       </button>
     </div>
   );

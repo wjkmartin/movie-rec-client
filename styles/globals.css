@@ -17,3 +17,13 @@ a {
 * {
   box-sizing: border-box;
 }
+
+button {
+  border: 1px solid #000;
+  border-radius: 0.5rem;
+  padding: 1rem .5rem;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: rgb(39, 37, 37);
+  color: white !important;
+}

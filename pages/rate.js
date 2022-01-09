@@ -64,22 +64,22 @@ export default function Rate() {
   // get user index in users by uid
 
   return (
-      <main className={commonStyles.main}>
-        {hasStartedRating ? (
-          <div className={styles.movieBlockContainer}>
-            <MovieBlock data={movieData} />{' '}
-            {/* REFACTOR TO PRESENTATIONAL COMPONENT ONLY */}
-            <RateButtons />
-          </div>
-        ) : (
-          <button
-            onClick={() => {
-              setHasStartedRating(true);
-            }}
-          >
-            Show me some movies
-          </button>
-        )}
-      </main>
+    <main className={commonStyles.main}>
+      {hasStartedRating ? (
+        <>
+          <MovieBlock data={movieData} />{' '}
+          {/* REFACTOR TO PRESENTATIONAL COMPONENT ONLY */}
+          <RateButtons />
+        </>
+      ) : (
+        <button
+          onClick={() => {
+            setHasStartedRating(true);
+          }}
+        >
+          Show me some movies
+        </button>
+      )}
+    </main>
   );
 }

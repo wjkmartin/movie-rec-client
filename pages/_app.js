@@ -21,6 +21,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
+        
         <Header />
         <Head>
         <title>MovieApp</title>

@@ -4,7 +4,17 @@
     justify-content: center;
     align-items: center;
     min-height: 80vh;
-    max-width: 99vw;
+    max-width: 100%;
+    overflow-x: hidden;
+
+}
+
+.loadingBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .loadingIcon {
