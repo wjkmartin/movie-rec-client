@@ -7,6 +7,8 @@ import { gql, useMutation } from '@apollo/client';
 
 import styles from './RateButtons.module.css';
 
+import { Button } from '@mui/material';
+
 export default function RateButtons() {
   const movieID = useSelector((state) => state.rate.ratingMovieID);
   const userID = useSelector((state) => state.auth.userIndexIdentifier);
@@ -49,44 +51,48 @@ export default function RateButtons() {
 
   return (
     <div className={styles.RateButtons}>
-      <button
-        className={`${styles.rateButton} ${styles.rateButton__fullWidth}`}
+      <div className={styles.rateButtonRow}>
+      <Button
+        variant="outlined"
         onClick={() => {
           handleClick(5);
         }}
       >
-        <span className={styles.rateButton__text}>Love it! (⬆)</span>
-      </button>
+        <span className={styles.rateButton__text}>Love it! ⬆</span>
+      </Button>
+      </div>
       <div className={styles.rateButtonRow}>
-        <button
-          className={`${styles.rateButton} ${styles.rateButton__halfWidth}`}
+        <Button
+          variant="outlined"
           onClick={() => {
             handleClick(1);
           }}
         >
           <span className={styles.rateButton__text}>
-            (⬅) Didn&apos;t like it{' '}
+            ⬅ Didn&apos;t like it{' '}
           </span>
-        </button>
-        <button
-          className={`${styles.rateButton} ${styles.rateButton__halfWidth}`}
+        </Button>
+        <Button
+         variant="outlined"
           onClick={() => {
             handleClick(3);
           }}
         >
-          <span className={styles.rateButton__text}>Liked it (➡) </span>
-        </button>
+          <span className={styles.rateButton__text}>Liked it ➡ </span>
+        </Button>
       </div>
-      <button
-        className={`${styles.rateButton} ${styles.rateButton__fullWidth}`}
+      <div className={styles.rateButtonRow}>
+      <Button
+        variant="outlined"
         onClick={() => {
           dispatch(rateSlice.actions.setDidRate(true));
         }}
       >
         <span className={styles.rateButton__text}>
-          Haven&apos;t seen it yet (⬇){' '}
+          Haven&apos;t seen it yet ⬇{' '}
         </span>
-      </button>
+      </Button>
+      </div>
     </div>
   );
 }

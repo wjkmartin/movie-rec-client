@@ -10,14 +10,6 @@
 
 .rateButtonRow {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 100% !important;
-}
-
-.rateButton__fullWidth {
-  width: 100%;
-}
-
-.rateButton__halfWidth {
-  width: 50%;
 }

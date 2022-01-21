@@ -8,6 +8,9 @@ import { gql, useQuery } from '@apollo/client';
 import commonStyles from '../styles/common.module.css';
 import styles from '../styles/Rec.module.css';
 
+import { Fab, Container, Button, CircularProgress } from '@mui/material';
+import { ArrowBack, ArrowForward, Add, Visibility } from '@mui/icons-material';
+
 import Image from 'next/image';
 
 export default function Recommend() {
@@ -15,8 +18,9 @@ export default function Recommend() {
   // get the current state of the database
   const [recommendations, setRecommendations] = useState([]);
   const [recommendationIndex, setRecommendationIndex] = useState(0);
+  const [loadingMovieRecs, setLoadingMovieRecs] = useState(true);
 
-  // const [generatePrefsForUser, { isLoading: isUpdating, isSuccess: isSuccess }] = useGeneratePrefScoresMutation();
+  
   const currentUser = useSelector((state) => state.auth);
 
   const RECS_TO_FETCH = 100;
@@ -31,7 +35,7 @@ export default function Recommend() {
     }
   `;
 
-  const { loading, error, data } = useQuery(GET_PREFSCORES, {
+  const { loadingUserData, error, data } = useQuery(GET_PREFSCORES, {
     variables: {
       user: {
         id: currentUser.userIndexIdentifier,
@@ -86,40 +90,58 @@ export default function Recommend() {
               dataWithPrefscore.original_language === 'en'
             ) {
               setRecommendations((prev) => [...prev, dataWithPrefscore]);
+              setLoadingMovieRecs(false);
             }
           });
         };
         populateData();
       }
     }
-  }, [data, recommendationIndex]);
+  }, [data]);
 
   return (
-      <main className={commonStyles.main}>
-        {loading ? (
-          <div className={commonStyles.loadingBlock}>
-            <Image
-              className={commonStyles.loadingIcon}
-              height="75px"
-              width="75px"
-              src="/loadingIcon.png"
-              alt="loading"
-            />
-            <p>Running the model for the freshest recs</p>
+    <Container className={loadingUserData || loadingMovieRecs ? commonStyles.ContainerLoading : ''}>
+      {loadingUserData || loadingMovieRecs ? (
+        <>
+          <CircularProgress />
+          <p>Running the model for the freshest recs</p>
+        </>
+      ) : (
+        <>
+          <MovieBlock data={recommendations[recommendationIndex]} />
+          <div className={styles.buttonContainerForBack}>
+            <Fab
+              className={styles.buttonForBack}
+              onClick={() => handlePrevButton()}
+              color="default"
+              aria-label="add"
+            >
+              <ArrowBack />
+            </Fab>
+            <Fab
+              className={styles.buttonForBack}
+              onClick={() => handleNextButton()}
+              color="default"
+              aria-label="add"
+            >
+              <ArrowForward />
+            </Fab>
           </div>
-        ) : (
-          <>
-            <MovieBlock data={recommendations[recommendationIndex]} />
-            <button onClick={() => handlePrevButton()}> Prev </button>
-            <button> Seen it! </button>{' '}
-            {/* this button will be used to mark the movie as seen and give a modal to rate it */}
-            <button onClick={() => handleNextButton()}> Next </button>
-            <h2>{recommendations[recommendationIndex]?.prefScore}</h2>
-            {recommendations.map((rec, i) => (
-              <p key={`movierec${i}`}>{rec.original_title}</p>
-            ))}
-          </>
-        )}
-      </main>
+          <div className={styles.bottomRow}>
+            <div>
+            <Button className={styles.bottomRowButton} color="inherit" variant="text">
+              <Add />
+              <span>Add to my saved movies</span>
+            </Button>
+            <Button className={styles.bottomRowButton} color="inherit" variant="text">
+              <Visibility />
+              <span>Seen it!</span>
+            </Button>
+            </div>
+            <p>Pref score (higher is better): {String(recommendations[recommendationIndex]?.prefScore)}</p>
+          </div>
+        </>
+      )}
+    </Container>
   );
 }

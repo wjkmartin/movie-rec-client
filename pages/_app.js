@@ -1,8 +1,12 @@
+import React from 'react';
 import { store } from '../store';
 import '../styles/globals.css';
 import { Provider } from 'react-redux';
 import Header from '../components/Header/Header';
 import Head from 'next/head';
+
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import {
   ApolloClient,
@@ -18,12 +22,15 @@ const client = new ApolloClient({
 });
 
 function MyApp({ Component, pageProps }) {
+  const theme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
+
   return (
     <ApolloProvider client={client}>
-      <Provider store={store}>
-        
-        <Header />
-        <Head>
+      <Head>
         <title>MovieApp</title>
         <meta
           name="description"
@@ -31,8 +38,13 @@ function MyApp({ Component, pageProps }) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-        <Component {...pageProps} />
-      </Provider>
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>
+          <Header />
+          <CssBaseline />
+          <Component {...pageProps} />
+        </Provider>
+      </ThemeProvider>
     </ApolloProvider>
   );
 }

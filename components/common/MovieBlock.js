@@ -24,9 +24,6 @@ const MovieBlock = (props) => {
             {movieData?.title} ({movieData?.release_date.substring(0, 4)})
           </h1>
         </div>
-        <div className="movie-block__rating">
-          <h2>{movieData?.popularity}</h2>
-        </div>
       </div>
       <div className={styles.movieBlock__body}>
         <div className="movie-block__poster">

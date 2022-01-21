@@ -9,6 +9,10 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.6",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.3.0",
+    "@mui/material": "^5.3.0",
     "@reduxjs/toolkit": "^1.6.2",
     "@rtk-query/graphql-request-base-query": "^1.0.3",
     "axios": "^0.24.0",

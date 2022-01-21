@@ -7,6 +7,8 @@ import rateSlice from '../components/_Rate/rateSlice';
 import commonStyles from '../styles/common.module.css';
 import styles from '../styles/Rate.module.css';
 
+import { Button, Container } from '@mui/material';
+
 import {
   getFirestore,
   query,
@@ -64,7 +66,7 @@ export default function Rate() {
   // get user index in users by uid
 
   return (
-    <main className={commonStyles.main}>
+    <Container className={commonStyles.ContainerLoading}>
       {hasStartedRating ? (
         <>
           <MovieBlock data={movieData} />{' '}
@@ -72,14 +74,15 @@ export default function Rate() {
           <RateButtons />
         </>
       ) : (
-        <button
+        <Button
+          variant="text"
           onClick={() => {
             setHasStartedRating(true);
           }}
         >
-          Show me some movies
-        </button>
+          Begin rating
+        </Button>
       )}
-    </main>
+    </Container>
   );
 }

@@ -1,16 +1,15 @@
-.main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    max-width: 100%;
-    overflow-x: hidden;
-
+.ContainerLoading {
+  min-height: 90vh !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .loadingBlock {
   display: flex;
+  justify-self: center;
+  align-self: center;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -18,9 +17,9 @@
 }
 
 .loadingIcon {
-  -webkit-animation: spin 2s cubic-bezier(.21,.85,.78,.51) infinite;
-  -moz-animation: spin 2s cubic-bezier(.21,.85,.78,.51) infinite;
-  animation: spin 2s cubic-bezier(.21,.85,.78,.51) infinite;
+  -webkit-animation: spin 2s cubic-bezier(0.21, 0.85, 0.78, 0.51) infinite;
+  -moz-animation: spin 2s cubic-bezier(0.21, 0.85, 0.78, 0.51) infinite;
+  animation: spin 2s cubic-bezier(0.21, 0.85, 0.78, 0.51) infinite;
 }
 
 @-moz-keyframes spin {
