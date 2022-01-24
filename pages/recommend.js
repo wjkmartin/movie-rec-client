@@ -21,7 +21,7 @@ export default function Recommend() {
   const [loadingMovieRecs, setLoadingMovieRecs] = useState(true);
 
   
-  const currentUser = useSelector((state) => state.auth);
+  const currentUser = useSelector((state) => state.user);
 
   const RECS_TO_FETCH = 100;
   const RECS_TO_SHOW = 10;

@@ -3,7 +3,7 @@ import thunk from 'redux-thunk'
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { movieAPI } from './services/rate/movie';
-import authSlice from './components/Auth/authSlice';
+import userSlice from './slices/userSlice';
 import rateSlice from './components/_Rate/rateSlice';
 
 import { firestoreReducer } from 'redux-firestore'
@@ -16,7 +16,7 @@ export const store = configureStore({
   reducer: {
     // Add the generated reducer as a specific top-level slice
     [movieAPI.reducerPath]: movieAPI.reducer,
-    auth: authSlice.reducer,
+    user: userSlice.reducer,
     rate: rateSlice.reducer,
     firestore: firestoreReducer,
   },

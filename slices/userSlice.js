@@ -10,8 +10,8 @@ const initialState = {
   savedMoviesById: [],
 };
 
-const authSlice = createSlice({
-  name: 'auth',
+const userSlice = createSlice({
+  name: 'user',
   initialState,
   reducers: {
     setUserID: (state, action) => {
@@ -26,5 +26,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUserID, isSignedIn, setUserIndexIdentifier } = authSlice.actions;
-export default authSlice;
+export const { setUserID, isSignedIn, setUserIndexIdentifier } = userSlice.actions;
+export default userSlice;
