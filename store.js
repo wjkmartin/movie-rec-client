@@ -1,8 +1,16 @@
+import thunk from 'redux-thunk'
+
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { movieAPI } from './services/rate/movie';
 import authSlice from './components/Auth/authSlice';
 import rateSlice from './components/_Rate/rateSlice';
+
+import { firestoreReducer } from 'redux-firestore'
+
+import {
+  getFirebase,
+} from 'react-redux-firebase'
 
 export const store = configureStore({
   reducer: {
@@ -10,12 +18,14 @@ export const store = configureStore({
     [movieAPI.reducerPath]: movieAPI.reducer,
     auth: authSlice.reducer,
     rate: rateSlice.reducer,
+    firestore: firestoreReducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
     .concat(movieAPI.middleware)
+    .concat(thunk.withExtraArgument({ getFirebase }))
 });
 
 setupListeners(store.dispatch);

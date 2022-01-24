@@ -7,6 +7,7 @@ const initialState = {
   userName: null,
   userEmail: null,
   userRole: null,
+  savedMoviesById: [],
 };
 
 const authSlice = createSlice({

@@ -17,7 +17,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import authSlice from './authSlice';
 import { getApps, initializeApp } from 'firebase/app';
-import firebaseConfig from '../../secrets/firebaseConfig';
+import firebaseConfig from '../../config/firebaseConfig';
 
 if (!getApps.length) {
   createFirebaseApp(firebaseConfig);

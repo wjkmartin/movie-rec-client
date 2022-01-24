@@ -16,21 +16,8 @@ import {
 } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import authSlice from './authSlice';
-import { getApps, initializeApp } from 'firebase/app';
-import firebaseConfig from '../../secrets/firebaseConfig';
 
-if (!getApps.length) {
-  createFirebaseApp(firebaseConfig);
-}
 
-function createFirebaseApp(config) {
-  if (!getApps.length) {
-    console.log('Firebase app not initialized. Initializing...');
-    initializeApp(config);
-  } else {
-    console.log('App already initialized');
-  }
-}
 
 function getDocsWithUserID(uid) {
   const db = getFirestore();
