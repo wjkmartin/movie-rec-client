@@ -10,16 +10,12 @@ import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 
 import { getApps, initializeApp } from 'firebase/app';
 
-import { createFirestoreInstance } from 'redux-firestore'
+import { createFirestoreInstance } from 'redux-firestore';
 import { fbConfig, rrfConfig } from '../config';
 
 import Header from '../components/Header/Header';
 
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-} from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/',
@@ -39,22 +35,22 @@ function MyApp({ Component, pageProps }) {
   });
 
   return (
-    <ApolloProvider client={client}>
-      <ThemeProvider theme={theme}>
-        <Provider store={store}>
-          <ReactReduxFirebaseProvider
-            config={rrfConfig}
-            firebase={firebase}
-            dispatch={store.dispatch}
-            createFirestoreInstance={createFirestoreInstance}
-          >
-            <Header />
-            <CssBaseline />
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <ReactReduxFirebaseProvider
+          config={rrfConfig}
+          firebase={firebase}
+          dispatch={store.dispatch}
+          createFirestoreInstance={createFirestoreInstance}
+        >
+          <Header />
+          <CssBaseline />
+          <ApolloProvider client={client}>
             <Component {...pageProps} />
-          </ReactReduxFirebaseProvider>
-        </Provider>
-      </ThemeProvider>
-    </ApolloProvider>
+          </ApolloProvider>
+        </ReactReduxFirebaseProvider>
+      </Provider>
+    </ThemeProvider>
   );
 }
 

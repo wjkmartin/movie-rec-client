@@ -4,22 +4,22 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import userSlice from '../../slices/userSlice';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
 
 import {
   GoogleAuthProvider,
-  FacebookAuthProvider,
   TwitterAuthProvider,
-  GithubAuthProvider,
   getAuth,
-  User as FirebaseUser,
+  User,
 } from 'firebase/auth';
 
 import { getAllUserDocs, getDocsWithUserID } from './firestoreHelpers';
 
-const LoginBlock = () => {
-  const [user, setUser] = useState(FirebaseUser);
-  const isSignedIn = useSelector((state) => state.user.isSignedIn);
+const LoginBlock = ({onClose, open, setLoginDialogueVisible}) => {
   const dispatch = useDispatch();
+  
+  const [user, setUser] = useState(User);
 
   const uiConfig = {
     // Popup signin flow rather than redirect flow.
@@ -76,9 +76,11 @@ const LoginBlock = () => {
   }, [dispatch]);
 
   return (
-    <>
+ 
+    <Dialog open={open}>
+      <DialogTitle>Choose login method</DialogTitle>
       <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={getAuth()} />
-    </>
+    </Dialog>
   );
 };
 

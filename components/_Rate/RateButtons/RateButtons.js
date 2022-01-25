@@ -11,7 +11,7 @@ import { Button } from '@mui/material';
 
 export default function RateButtons() {
   const movieID = useSelector((state) => state.rate.ratingMovieID);
-  const userID = useSelector((state) => state.auth.userIndexIdentifier);
+  const userID = useSelector((state) => state.user.userIndexIdentifier);
   const dispatch = useDispatch();
 
   const ADD_RATING = gql`

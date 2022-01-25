@@ -22,9 +22,19 @@ const userSlice = createSlice({
     },
     setUserIndexIdentifier: (state, action) => {
       state.userIndexIdentifier = action.payload;
-    }
+    },
+    logoutUser: (state) => {
+      state.userID = null;
+      state.isSignedIn = null;
+      state.userIndexIdentifier = null;
+      state.userName = null;
+      state.userEmail = null;
+      state.userRole = null;
+      state.savedMoviesById = [];
+    },
   },
 });
 
-export const { setUserID, isSignedIn, setUserIndexIdentifier } = userSlice.actions;
+export const { setUserID, isSignedIn, setUserIndexIdentifier, logoutUser } =
+  userSlice.actions;
 export default userSlice;

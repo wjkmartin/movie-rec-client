@@ -11,8 +11,6 @@ import styles from '../styles/Rec.module.css';
 import { Fab, Container, Button, CircularProgress } from '@mui/material';
 import { ArrowBack, ArrowForward, Add, Visibility } from '@mui/icons-material';
 
-import Image from 'next/image';
-
 export default function Recommend() {
   // make a firebase connection
   // get the current state of the database
