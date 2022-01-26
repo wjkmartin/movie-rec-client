@@ -11,15 +11,31 @@ import styles from '../styles/Rec.module.css';
 import { Fab, Container, Button, CircularProgress } from '@mui/material';
 import { ArrowBack, ArrowForward, Add, Visibility } from '@mui/icons-material';
 
+import {
+  getFirestore,
+  query,
+  collection,
+  where,
+  getDocs,
+} from 'firebase/firestore';
+
 export default function Recommend() {
   // make a firebase connection
   // get the current state of the database
   const [recommendations, setRecommendations] = useState([]);
   const [recommendationIndex, setRecommendationIndex] = useState(0);
+  const [userProfile, setUserProfile] = useState(null);
   const [loadingMovieRecs, setLoadingMovieRecs] = useState(true);
 
-  
   const currentUser = useSelector((state) => state.user);
+  const db = getFirestore();
+  const usersCol = collection(db, 'Users');
+  const q = query(usersCol, where('userIndex', '==', currentUser.userIndexIdentifier));
+  const userDocument = getDocs(q).then(
+    (doc) => {setUserProfile(doc[0])},
+  )
+
+
 
   const RECS_TO_FETCH = 100;
   const RECS_TO_SHOW = 10;
@@ -62,6 +78,7 @@ export default function Recommend() {
   }
 
   useEffect(() => {
+    console.log('userProfile', userProfile);
     setRecommendations([]);
     if (data) {
       const prefsFull = [...data.getPrefscores];
@@ -96,9 +113,17 @@ export default function Recommend() {
       }
     }
   }, [data]);
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
-    <Container className={loadingUserData || loadingMovieRecs ? commonStyles.ContainerLoading : ''}>
+
+    <Container
+      className={
+        loadingUserData || loadingMovieRecs ? commonStyles.ContainerLoading : ''
+      }
+    >
       {loadingUserData || loadingMovieRecs ? (
         <>
           <CircularProgress />
@@ -127,16 +152,20 @@ export default function Recommend() {
           </div>
           <div className={styles.bottomRow}>
             <div>
-            <Button className={styles.bottomRowButton} color="inherit" variant="text">
-              <Add />
-              <span>Add to my saved movies</span>
-            </Button>
-            <Button className={styles.bottomRowButton} color="inherit" variant="text">
-              <Visibility />
-              <span>Seen it!</span>
-            </Button>
+              // button add to saved
+              <Button
+                className={styles.bottomRowButton}
+                color="inherit"
+                variant="text"
+              >
+                <Visibility />
+                <span>Seen it!</span>
+              </Button>
             </div>
-            <p>Pref score (higher is better): {String(recommendations[recommendationIndex]?.prefScore)}</p>
+            <p>
+              Pref score (higher is better):{' '}
+              {String(recommendations[recommendationIndex]?.prefScore)}
+            </p>
           </div>
         </>
       )}

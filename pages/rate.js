@@ -32,6 +32,8 @@ export default function Rate() {
     }
   `;
 
+  
+
   const { loading, error, data, refetch } = useQuery(GET_MOVIE_TO_RATE, {
     variables: {
       userId: 1,
@@ -57,6 +59,9 @@ export default function Rate() {
   }
 
   useEffect(() => {
+    
+
+
     const checkIfRated = async (q) => {
       await getDocs(q).then((res) => {
         if (res.docs.length > 0) {

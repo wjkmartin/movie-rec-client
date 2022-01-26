@@ -6,7 +6,7 @@ import styles from './Header.module.css';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getAuth } from 'firebase/auth'
+import { getAuth } from 'firebase/auth';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -103,20 +103,19 @@ const Header = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
-                key={page[0]}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {<Link href={page[1]}>{page[0]}</Link>}
-              </Button>
+              <Link href={page[1]}>
+                <Button
+                  key={page[0]}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  {page[0]}
+                </Button>
+              </Link>
             ))}
           </Box>
 
-          <UserArea
-            isSignedIn={isSignedIn}
-            auth={auth}
-          />
+          <UserArea isSignedIn={isSignedIn} auth={auth} />
         </Toolbar>
       </Container>
     </AppBar>

@@ -6,12 +6,9 @@ import { Provider } from 'react-redux';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
-
 import { getApps, initializeApp } from 'firebase/app';
 
-import { createFirestoreInstance } from 'redux-firestore';
-import { fbConfig, rrfConfig } from '../config';
+import { fbConfig } from '../config';
 
 import Header from '../components/Header/Header';
 
@@ -37,18 +34,11 @@ function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <ReactReduxFirebaseProvider
-          config={rrfConfig}
-          firebase={firebase}
-          dispatch={store.dispatch}
-          createFirestoreInstance={createFirestoreInstance}
-        >
           <Header />
           <CssBaseline />
           <ApolloProvider client={client}>
             <Component {...pageProps} />
           </ApolloProvider>
-        </ReactReduxFirebaseProvider>
       </Provider>
     </ThemeProvider>
   );
