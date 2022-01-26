@@ -8,7 +8,7 @@ import styles from '../styles/Rate.module.css';
 
 import { gql, useQuery } from '@apollo/client';
 
-import { Button, Container } from '@mui/material';
+import { Button, Container, CircularProgress } from '@mui/material';
 
 import {
   getFirestore,
@@ -24,8 +24,6 @@ import RateButtons from '../components/_Rate/RateButtons/RateButtons';
 import { getMovieData } from '../services/rec/tmdb';
 
 export default function Rate() {
-  const [hasStartedRating, setHasStartedRating] = useState(false);
-
   const GET_MOVIE_TO_RATE = gql`
     query Query($userId: Int!) {
       getMovie(userId: $userId) {
@@ -34,14 +32,11 @@ export default function Rate() {
     }
   `;
 
-  const { loading, error, data, refetch } = useQuery(
-    GET_MOVIE_TO_RATE,
-    {
-      variables: {
-        userId: 1,
-      },
-    }
-  );
+  const { loading, error, data, refetch } = useQuery(GET_MOVIE_TO_RATE, {
+    variables: {
+      userId: 1,
+    },
+  });
   // const [movieData, setMovieData] = useState(null);
 
   const [foundUnratedMovie, setFoundUnratedMovie] = useState(false);
@@ -51,6 +46,15 @@ export default function Rate() {
   const dispatch = useDispatch();
   const didRate = useSelector((state) => state.rate.didRate);
   const [movieData, setMovieData] = useState(null);
+  const [movieIdsToRate, setMovieIdsToRate] = useState([]);
+
+  if (data && movieIdsToRate.length < 10) {
+    if (!movieIdsToRate.some((id) => id === data.getMovie.id)) {
+      setMovieIdsToRate([...movieIdsToRate, data.getMovie.id]);
+      refetch();
+      console.log('movieIdsToRate', movieIdsToRate);
+    }
+  }
 
   useEffect(() => {
     const checkIfRated = async (q) => {
@@ -64,12 +68,15 @@ export default function Rate() {
     };
 
     if (didRate) {
+      // remove first movie from movieIdsToRate
+      const newMovieIdsToRate = movieIdsToRate.slice(1);
+      setMovieIdsToRate(newMovieIdsToRate);
+      setFoundUnratedMovie()
       dispatch(rateSlice.actions.setDidRate(false));
-      refetch();
-    } else if (data) {
+    } else if (movieIdsToRate.length > 0) {
       const ratingsQuery = query(
         collection(db, 'Ratings'),
-        where('tmdb_id', '==', data.getMovie.id)
+        where('tmdb_id', '==', movieIdsToRate[0])
       );
       checkIfRated(ratingsQuery);
     } else if (loading) {
@@ -82,29 +89,14 @@ export default function Rate() {
       getMovieData(data.getMovie.id).then((res) => {
         setMovieData(res.data);
       });
-      dispatch(
-        rateSlice.actions.setRatingMovieID(data.getMovie.id)
-      );
+      dispatch(rateSlice.actions.setRatingMovieID(data.getMovie.id));
     }
-  }, [data, didRate, foundUnratedMovie, dispatch, refetch]);
+  }, [didRate, foundUnratedMovie, dispatch, refetch]);
   // get user index in users by uid
   return (
-    <Container style={!hasStartedRating ? {justifyContent: 'center'} : {justifyContent: 'flex-start'}} className={ commonStyles.ContainerLoading }>
-      {hasStartedRating ? (
-        <>
-          <MovieBlock data={movieData} /> 
-          <RateButtons/>
-        </>
-      ) : (
-        <Button
-          variant="text"
-          onClick={() => {
-            setHasStartedRating(true);
-          }}
-        >
-          Begin rating
-        </Button>
-      )}
+    <Container className={''}>
+      {loading ? <CircularProgress /> : <MovieBlock data={movieData} />}
+      <RateButtons />
     </Container>
   );
 }

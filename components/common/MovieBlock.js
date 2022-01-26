@@ -35,7 +35,7 @@ const MovieBlock = (props) => {
       </div>
     </div>
   );
-  return <>{isLoading ? <div>Loading movie data...</div> : movie}</>;
+  return <>{movie}</>;
 };
 
 export default MovieBlock;
