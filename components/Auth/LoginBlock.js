@@ -1,5 +1,5 @@
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -11,15 +11,16 @@ import {
   GoogleAuthProvider,
   TwitterAuthProvider,
   getAuth,
-  User,
+  onAuthStateChanged,
 } from 'firebase/auth';
 
 import { getAllUserDocs, getDocsWithUserID } from './firestoreHelpers';
+import { setDoc, getFirestore, doc } from 'firebase/firestore';
 
-const LoginBlock = ({onClose, open, setLoginDialogueVisible}) => {
+const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
   const dispatch = useDispatch();
-  
-  const [user, setUser] = useState(User);
+  const db = getFirestore();
+  const auth = getAuth();
 
   const uiConfig = {
     // Popup signin flow rather than redirect flow.
@@ -36,48 +37,43 @@ const LoginBlock = ({onClose, open, setLoginDialogueVisible}) => {
   };
 
   async function assignNewUserToCollection(uid, cb) {
-    const db = getFirestore();
-    const users = collection(db, 'Users');
     getAllUserDocs().then((snapshot) => {
+      const newUserIndex = snapshot.docs.length + 1;
       const user = {
-        userIndex: snapshot.docs.length + 1,
+        userIndex: newUserIndex,
         uid: uid,
         age: '',
         gender: '',
         createdAt: new Date(),
         updatedAt: new Date(),
+        savedMoviesById: [],
       };
-      addDoc(users, user);
-      cb(snapshot.docs.length + 1);
+      console.log(snapshot.docs.length);
+      setDoc(doc(db, 'Users', String(newUserIndex)), user);
+      cb(newUserIndex);
     });
   }
 
-  useEffect(() => {
-    function setUserIndexIdLocal(userIndex) {
-      dispatch(userSlice.actions.setUserIndexIdentifier(userIndex));
-    }
+  function setUserIndexIdLocal(userIndex) {
+    dispatch(userSlice.actions.setUserIndexIdentifier(userIndex));
+  }
 
-    getAuth().onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-        dispatch(userSlice.actions.setUserID(user.uid));
-        dispatch(userSlice.actions.isSignedIn(true));
-        getDocsWithUserID(user.uid).then((snapshot) => {
-          if (snapshot.docs.length === 0) {
-            assignNewUserToCollection(user.uid, setUserIndexIdLocal);
-          } else {
-            setUserIndexIdLocal(snapshot.docs[0].data().userIndex);
-          }
-        });
-
-        return;
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    dispatch(userSlice.actions.setUserID(user.uid));
+    dispatch(userSlice.actions.isSignedIn(true));
+    getDocsWithUserID(user.uid).then((snapshot) => {
+      if (snapshot.docs.length === 0) {
+        assignNewUserToCollection(user.uid, setUserIndexIdLocal);
+      } else {
+        setUserIndexIdLocal(snapshot.docs[0].data().userIndex);
       }
     });
-  }, [dispatch]);
+
+    return;
+  });
 
   return (
- 
-    <Dialog open={open}>
+    <Dialog open={Boolean(open)}>
       <DialogTitle>Choose login method</DialogTitle>
       <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={getAuth()} />
     </Dialog>

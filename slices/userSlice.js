@@ -8,6 +8,10 @@ const initialState = {
   userEmail: null,
   userRole: null,
   savedMoviesById: [],
+  didRateSinceLastRec: true,
+  recommendations: null,
+  age: 20,
+  gender: 1
 };
 
 const userSlice = createSlice({
@@ -32,9 +36,15 @@ const userSlice = createSlice({
       state.userRole = null;
       state.savedMoviesById = [];
     },
+    setDidRateSinceLastRec: (state, action) => {
+      state.didRateSinceLastRec = action.payload;
+    },
+    setRecommendations: (state, action) => {
+      state.recommendations = action.payload;
+    }
   },
 });
 
-export const { setUserID, isSignedIn, setUserIndexIdentifier, logoutUser } =
+export const { setUserID, isSignedIn, setUserIndexIdentifier, logoutUser, setDidRateSinceLastRec, setRecommendations } =
   userSlice.actions;
 export default userSlice;

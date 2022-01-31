@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import HeaderLink from './HeaderLink';
 
@@ -16,8 +16,6 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import UserArea from './UserArea/UserArea';
@@ -103,9 +101,9 @@ const Header = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Link href={page[1]}>
+              <Link key={`link__${page[0]}`} href={page[1]}>
                 <Button
-                  key={page[0]}
+                  key={`button__${page[0]}`}
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >

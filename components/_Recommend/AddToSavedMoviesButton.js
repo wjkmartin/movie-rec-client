@@ -1,26 +1,28 @@
-import React, {useState, addEffect} from 'react';
-import { doc, setDoc, collection, query, where } from "firebase/firestore"; 
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { Button } from '@mui/material';
 import styles from './AddToSavedMoviesButton.module.css';
 
+const AddToSavedMoviesButton = ({ movieId }) => {
+  const [isSaved, setIsSaved] = useState(false);
+    
+  const handleClick = () => {
+    setIsSaved(!isSaved);
+  }
 
-const AddToSavedMoviesButton = ({ movieId, userId }) => {
-    useEffect (() => {
-        
+  return (
+    <Button
+      className={`${styles.AddToSavedMoviesButton} ${
+        isSaved ? styles.isSaved : ''
+      }`}
+      color="inherit"
+      variant="text"
+      onClick={handleClick}
+    >
+      <span>{isSaved ? '✔ Added to saved movies' : 'Add to my saved movies'}</span>
+    </Button>
+  );
+};
 
-
-
-    const [isSaved, setIsSaved] = useState(false);
-
-    const handleClick = () => {
-        await setDoc(doc(db, "cities", "LA"), {
-            name: "Los Angeles",
-            state: "CA",
-            country: "USA"
-          });
-    };
-    return (
-        <Button className={`${styles.AddToSavedMoviesButton} ${}`} color="inherit" variant="text">
-              <span>Add to my saved movies</span>
-            </Button>
-    )
+export default AddToSavedMoviesButton;

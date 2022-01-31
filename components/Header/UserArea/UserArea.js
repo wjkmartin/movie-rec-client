@@ -83,13 +83,13 @@ const UserArea = ({ isSignedIn, auth }) => {
         >
           {settings.map((setting) => (
             <MenuItem
-              key={setting}
+              key={`menu__${setting}`}
               onClick={() => {
                 handleModalClick(setting);
                 handleCloseUserMenu();
               }}
             >
-              <Typography textAlign="center">{setting}</Typography>
+              <Typography key={`typo__${setting}`} textAlign="center">{setting}</Typography>
             </MenuItem>
           ))}
         </Menu>
