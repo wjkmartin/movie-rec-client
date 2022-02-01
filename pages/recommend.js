@@ -135,9 +135,7 @@ export default function Recommend() {
 
   return (
     <Container>
-      <MovieBlock
-        movie={data[selectedMovieIndex]}
-      />
+      <MovieBlock movie={data[selectedMovieIndex]} />
       <div className={styles.buttonContainerForBack}>
         <Fab
           className={styles.buttonForBack}
