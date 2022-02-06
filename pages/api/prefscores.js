@@ -83,7 +83,6 @@ async function getPrefs(movieData, userData) {
   }
   return prefs;
 }
-
 const read = (path, type) =>
   new Promise((resolve, reject) => {
     fs.readFile(path, type, (err, file) => {
