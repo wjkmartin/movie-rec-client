@@ -35,6 +35,7 @@ const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
       TwitterAuthProvider.PROVIDER_ID,
     ],
   };
+    
 
   async function assignNewUserToCollection(uid, cb) {
     getAllUserDocs().then((snapshot) => {
