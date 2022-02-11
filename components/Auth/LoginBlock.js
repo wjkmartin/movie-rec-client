@@ -17,6 +17,7 @@ import {
 import { getAllUserDocs, getDocsWithUserID } from './firestoreHelpers';
 import { setDoc, getFirestore, doc } from 'firebase/firestore';
 
+
 const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
   const dispatch = useDispatch();
   const db = getFirestore();
