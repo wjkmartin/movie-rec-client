@@ -16,9 +16,11 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import LoginBlock from '../../Auth/loginBlock';
+import { useFirebase } from 'react-redux-firebase';
 
 const UserArea = ({ isSignedIn, auth }) => {
   const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+  const firebase = useFirebase();
   const loginOptions = '';
   const dispatch = useDispatch();
 
@@ -46,7 +48,7 @@ const UserArea = ({ isSignedIn, auth }) => {
         signOut(auth)
           .then(() => {
             console.log('Signed out');
-            dispatch(userSlice.actions.logoutUser());
+            firebase.auth.logout();
           })
           .catch((error) => {
             // An error happened.

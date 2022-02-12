@@ -26,11 +26,15 @@ const pages = [
   ['Rate', '/rate'],
 ];
 
+
+
 const Header = () => {
   const dispatch = useDispatch();
   const auth = getAuth();
 
-  const isSignedIn = useSelector((state) => state.user.isSignedIn);
+  const authLoaded = useSelector((state) => state.firebase.auth.isLoaded);
+  const authEmpty = useSelector((state) => state.firebase.auth.isEmpty);
+  const isSignedIn = authLoaded && !authEmpty;
 
   const [anchorElNav, setAnchorElNav] = useState(null);
 
@@ -100,7 +104,7 @@ const Header = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {(isSignedIn ? pages :[]).map((page) => (
               <Link key={`link__${page[0]}`} href={page[1]}>
                 <Button
                   key={`button__${page[0]}`}

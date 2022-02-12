@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 
 export default function Home() {
-
+  const profile = useSelector(state => state.firebase.profile);
   return (
     <Container className={commonStyles.ContainerLoading}> 
     </Container>
