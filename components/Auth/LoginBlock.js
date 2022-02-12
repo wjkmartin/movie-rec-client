@@ -7,7 +7,12 @@ import userSlice from '../../slices/userSlice';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import { useFirebase, isLoaded, isEmpty } from 'react-redux-firebase';
+import {
+  useFirebase,
+  isLoaded,
+  isEmpty,
+  firebaseConnect,
+} from 'react-redux-firebase';
 
 import { getDatabase, ref, get } from 'firebase/compat/database';
 
@@ -29,22 +34,42 @@ const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
     },
   };
 
-  function handleSignIn(_authResult) {
+  async function handleSignIn(_authResult) {
     const uid = _authResult.user.uid;
-    const dbRef = ref(getDatabase());
-    get(dbRef, 'users/count').then((snapshot) => {
-      console.log(snapshot.val());
-    }).catch((error) => {
-      console.log(error);
-    });
-
-    // getDocsWithUserID(uid).then((snapshot) => {
-    //   if (snapshot.docs.length === 0) {
-    //     assignNewUserToCollection(uid, setUserIndexIdLocal);
-    //   } else {
-    //     setUserIndexIdLocal(snapshot.docs[0].data().userIndex);
-    //   }
-    // });
+    firebase
+      .database()
+      .ref(`users/${uid}`)
+      .once('value', (snapshot) => {
+        if (snapshot.exists()) {
+          // user login as per normal
+        } else {
+          // new user
+          firebase
+            .database()
+            .ref('users/count')
+            .once('value', (snapshot) => {
+              const count = snapshot.val();
+              firebase
+                .database()
+                .ref(`users/${uid}`)
+                .set({
+                  id: count + 1,
+                  name: _authResult.user.displayName,
+                  email: _authResult.user.email,
+                });
+            });
+          firebase
+            .database()
+            .ref('users/count')
+            .once('value', (snapshot) => {
+              const count = snapshot.val();
+              firebase
+                .database()
+                .ref('users/count')
+                .set(count + 1);
+            });
+        }
+      });
   }
 
   async function assignNewUserToCollection(uid, cb) {
