@@ -20,7 +20,6 @@ import { getFirestore, doc, getDoc } from 'firebase/firestore';
 export default function Recommend() {
   const dispatch = useDispatch();
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
-  const [userProfile, setUserProfile] = useState(null);
   const didRateSinceLastRec = useSelector(
     (state) => state.user.didRateSinceLastRec
   );
@@ -28,14 +27,8 @@ export default function Recommend() {
     (state) => state.user.recommendations
   );
 
-  const currentUser = useSelector((state) => state.user);
+  
   const db = getFirestore();
-  const getUserData = async () => {
-    const userRef = doc(db, 'Users', String(currentUser.userIndexIdentifier));
-    const userData = await getDoc(userRef);
-    setUserProfile(userData.data());
-  };
-  getUserData();
 
   const RECS_TO_FETCH = 5;
   const RECS_TO_SHOW = 5;
@@ -118,7 +111,7 @@ export default function Recommend() {
       <Container className={commonStyles.ContainerLoading}>
         <h3>
           Error fetching recommendations! Please refresh the page. The developer
-          responsible has been automatically fired.
+          responsible has been automatically fired 🥾.
         </h3>
       </Container>
     );

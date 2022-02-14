@@ -17,9 +17,10 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import LoginBlock from '../../Auth/loginBlock';
 import { useFirebase } from 'react-redux-firebase';
+import { ProfilePopup } from '../ProfilePopup/ProfilePopup';
 
 const UserArea = ({ isSignedIn, auth }) => {
-  const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+  const settings = ['Profile', 'Logout'];
   const firebase = useFirebase();
   const loginOptions = '';
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const UserArea = ({ isSignedIn, auth }) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
 
   const [loginDialogueVisible, setLoginDialogueVisible] = useState(false);
+  const [profileDialogueVisible, setProfileDialogueVisible] = useState(false);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -39,15 +41,12 @@ const UserArea = ({ isSignedIn, auth }) => {
   const handleModalClick = (selection) => {
     switch (selection) {
       case 'Profile':
-        break;
-      case 'Account':
-        break;
-      case 'Dashboard':
+        setProfileDialogueVisible(true);
         break;
       case 'Logout':
+        setLoginDialogueVisible(false);
         signOut(auth)
           .then(() => {
-            console.log('Signed out');
             firebase.auth.logout();
           })
           .catch((error) => {
@@ -61,6 +60,7 @@ const UserArea = ({ isSignedIn, auth }) => {
 
   if (isSignedIn) {
     return (
+      <>
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Open settings">
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -96,6 +96,8 @@ const UserArea = ({ isSignedIn, auth }) => {
           ))}
         </Menu>
       </Box>
+      {profileDialogueVisible ? <ProfilePopup open={profileDialogueVisible} setProfileDialogueVisible={setProfileDialogueVisible}/> : null}
+      </>
     );
   } else {
     return (
