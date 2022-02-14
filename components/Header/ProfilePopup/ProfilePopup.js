@@ -9,10 +9,12 @@ import {
   Stack,
   Button,
 } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 export const ProfilePopup = ({ open, setProfileDialogueVisible }) => {
-  const [gender, setGender] = useState(0);
-  const [age, setAge] = useState(null);
+  const profile = useSelector((state) => state.firebase.profile);
+  const [gender, setGender] = useState(profile.gender);
+  const [age, setAge] = useState(2022 - profile.yob);
   const handleChange = (event) => {
     setGender(event.target.value);
   };

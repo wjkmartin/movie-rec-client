@@ -72,33 +72,6 @@ const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
       });
   }
 
-  async function assignNewUserToCollection(uid, cb) {
-    const db = getDatabase();
-    const usersRef = ref(db, 'users');
-    console.log(usersRef);
-    const newUserIndex = usersRef.length;
-
-    getAllUserDocs().then((snapshot) => {
-      const newUserIndex = snapshot.docs.length + 1;
-      const user = {
-        userIndex: newUserIndex,
-        uid: uid,
-        age: '',
-        gender: '',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        savedMoviesById: null,
-        recommendations: null,
-      };
-      firebase.updateProfile(user);
-      cb(newUserIndex);
-    });
-  }
-
-  function setUserIndexIdLocal(userIndex) {
-    dispatch(userSlice.actions.setUserIndexIdentifier(userIndex));
-  }
-
   return (
     <Dialog open={Boolean(open)}>
       <DialogTitle>Choose login method</DialogTitle>

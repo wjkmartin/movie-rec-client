@@ -17,9 +17,12 @@ import AddToSavedMoviesButton from '../components/_Recommend/AddToSavedMoviesBut
 
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
+
+
 export default function Recommend() {
   const dispatch = useDispatch();
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
+  const currentUser = useSelector((state) => state.firebase.profile);
   const didRateSinceLastRec = useSelector(
     (state) => state.user.didRateSinceLastRec
   );
