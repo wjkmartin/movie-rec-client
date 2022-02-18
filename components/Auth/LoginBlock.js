@@ -20,6 +20,7 @@ const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
   const dispatch = useDispatch();
   const firebase = useFirebase();
   const auth = useSelector((state) => state.firebase.auth);
+  
 
   const uiConfig = {
     signInFlow: 'popup',
