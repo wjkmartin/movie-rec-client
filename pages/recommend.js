@@ -16,8 +16,10 @@ import styles from '../styles/Rec.module.css';
 
 export default function Recommend() {
   const dispatch = useDispatch();
+  const firebase = getFirebase();
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
   const userData = useSelector((state) => state.firebase.profile);
+  const auth = useSelector((state) => state.firebase.auth);
   const needToRegenRecs = useSelector((state) => state.user.needToRegenRecs);
   const savedRecommendations = [];
 
@@ -27,27 +29,29 @@ export default function Recommend() {
   const fetcher = ({ url, uid, gender, age }) =>
     fetch(`${url}?uid=${uid}&gender=${gender}&age=${age}`, {
       method: 'GET',
+      redirect: 'follow',
       headers: {
         'Content-Type': 'application/json',
       },
     })
-      .then((data) => {
-        const processedData = data.getPrefscores
+      .then((response) => response.json())
+      .then((json) => {
+        const processedData = json
           .sort((a, b) => b.score - a.score)
           .slice(0, RECS_TO_FETCH);
         return populateDataForPrefscoresArray(processedData);
       })
       .then((res) => {
-        dispatch(userSlice.actions.setRecommendations(res));
-        dispatch(userSlice.actions.setDidRateSinceLastRec(false));
+        firebase.set(`users/${auth.uid}/recommendations`, res);
+        dispatch(userSlice.actions.setNeedToRegenRecs(false));
         return res;
       })
       .catch((err) => console.log(err));
 
-  const { data, error } = useSWR(
+  let { data, error } = useSWR(
     needToRegenRecs
       ? {
-          url: 'api/prefscores',
+          url: '/api/prefscores',
           uid: userData.id,
           gender: userData.gender,
           age: new Date().getFullYear() - userData.yob,
@@ -55,6 +59,10 @@ export default function Recommend() {
       : null,
     fetcher
   );
+
+  if (!data) {
+    data = userData.recommendations
+  } 
 
   const getDataForMovieAndAppendScore = async (movieId, score) => {
     console.log('fetching details for movie: ', movieId);
