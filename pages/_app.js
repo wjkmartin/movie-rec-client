@@ -18,13 +18,6 @@ import { fbConfig } from '../config';
 
 import Header from '../components/Header/Header';
 
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-
-const client = new ApolloClient({
-  uri: 'http://localhost:4000/',
-  cache: new InMemoryCache(),
-});
-
 firebase.initializeApp(fbConfig);
 
 const rrfConfig = {
@@ -50,9 +43,7 @@ function MyApp({ Component, pageProps }) {
         <ReactReduxFirebaseProvider {...rrfProps}>
           <Header />
           <CssBaseline />
-          <ApolloProvider client={client}>
             <Component {...pageProps} />
-          </ApolloProvider>
         </ReactReduxFirebaseProvider>
       </Provider>
     </ThemeProvider>

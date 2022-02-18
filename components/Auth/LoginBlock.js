@@ -3,24 +3,17 @@ import React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import userSlice from '../../slices/userSlice';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import {
   useFirebase,
-  isLoaded,
-  isEmpty,
-  firebaseConnect,
 } from 'react-redux-firebase';
-
-import { getDatabase, ref, get } from 'firebase/compat/database';
 
 const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
   const dispatch = useDispatch();
   const firebase = useFirebase();
   const auth = useSelector((state) => state.firebase.auth);
-  
 
   const uiConfig = {
     signInFlow: 'popup',
@@ -28,7 +21,6 @@ const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
     callbacks: {
       signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-        console.log('here1');
         handleSignIn(authResult);
         return false;
       },
@@ -57,6 +49,8 @@ const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
                   id: count + 1,
                   name: _authResult.user.displayName,
                   email: _authResult.user.email,
+                  yob: 1990,
+                  gender: 1
                 });
             });
           firebase

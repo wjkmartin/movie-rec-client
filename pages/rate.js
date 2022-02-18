@@ -32,8 +32,6 @@ export default function Rate() {
     }
   `;
 
-  
-
   const { loading, error, data, refetch } = useQuery(GET_MOVIE_TO_RATE, {
     variables: {
       userId: 1,

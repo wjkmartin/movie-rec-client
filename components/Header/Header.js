@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import HeaderLink from './HeaderLink';
 
@@ -19,6 +19,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import UserArea from './UserArea/UserArea';
+import { useFirebaseConnect } from 'react-redux-firebase';
 
 const pages = [
   ['Get recs', '/recommend'],
@@ -31,7 +32,7 @@ const pages = [
 const Header = () => {
   const dispatch = useDispatch();
   const auth = getAuth();
-
+  
   const authLoaded = useSelector((state) => state.firebase.auth.isLoaded);
   const authEmpty = useSelector((state) => state.firebase.auth.isEmpty);
   const isSignedIn = authLoaded && !authEmpty;

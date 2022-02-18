@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import userSlice from '../../../slices/userSlice';
 
 import { signOut } from 'firebase/auth';
 
@@ -16,12 +15,14 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import LoginBlock from '../../Auth/loginBlock';
-import { useFirebase } from 'react-redux-firebase';
+
 import { ProfilePopup } from '../ProfilePopup/ProfilePopup';
+import FirebaseConnector from './FirebaseConnector/FirebaseConnector';
 
 const UserArea = ({ isSignedIn, auth }) => {
   const settings = ['Profile', 'Logout'];
-  const firebase = useFirebase();
+  
+  
   const loginOptions = '';
   const dispatch = useDispatch();
 
@@ -61,6 +62,7 @@ const UserArea = ({ isSignedIn, auth }) => {
   if (isSignedIn) {
     return (
       <>
+      <FirebaseConnector />
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Open settings">
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

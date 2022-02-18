@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { Button } from '@mui/material';
 import styles from './AddToSavedMoviesButton.module.css';
 

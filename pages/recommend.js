@@ -1,54 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { getFirebase, useFirebaseConnect } from 'react-redux-firebase';
 import userSlice from '../slices/userSlice';
 import { getMovieData } from '../services/rec/tmdb';
 import MovieBlock from '../components/common/MovieBlock';
 
 import useSWR from 'swr';
 
-import { request, gql } from 'graphql-request';
-
-import commonStyles from '../styles/common.module.css';
-import styles from '../styles/Rec.module.css';
+import AddToSavedMoviesButton from '../components/_Recommend/AddToSavedMoviesButton';
 
 import { Fab, Container, Button, CircularProgress } from '@mui/material';
 import { ArrowBack, ArrowForward, Add, Visibility } from '@mui/icons-material';
-import AddToSavedMoviesButton from '../components/_Recommend/AddToSavedMoviesButton';
-
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
-
-
+import commonStyles from '../styles/common.module.css';
+import styles from '../styles/Rec.module.css';
 
 export default function Recommend() {
   const dispatch = useDispatch();
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
-  const currentUser = useSelector((state) => state.firebase.profile);
-  const didRateSinceLastRec = useSelector(
-    (state) => state.user.didRateSinceLastRec
-  );
-  const savedRecommendations = useSelector(
-    (state) => state.user.recommendations
-  );
-
-  
-  const db = getFirestore();
+  const userData = useSelector((state) => state.firebase.profile);
+  const needToRegenRecs = useSelector((state) => state.user.needToRegenRecs);
+  const savedRecommendations = [];
 
   const RECS_TO_FETCH = 5;
   const RECS_TO_SHOW = 5;
 
-  const GET_PREFSCORES = gql`
-    query getPrefs($user: User!) {
-      getPrefscores(user: $user) {
-        movieId
-        score
-      }
-    }
-  `;
-
-  const fetcher = ({ url, query, variables }) =>
-    request(url, query, variables)
+  const fetcher = ({ url, uid, gender, age }) =>
+    fetch(`${url}?uid=${uid}&gender=${gender}&age=${age}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
       .then((data) => {
-        console.log('fetching data');
         const processedData = data.getPrefscores
           .sort((a, b) => b.score - a.score)
           .slice(0, RECS_TO_FETCH);
@@ -61,18 +44,13 @@ export default function Recommend() {
       })
       .catch((err) => console.log(err));
 
-  const { data = savedRecommendations, error } = useSWR(
-    didRateSinceLastRec
+  const { data, error } = useSWR(
+    needToRegenRecs
       ? {
-          url: 'http://localhost:4000',
-          query: GET_PREFSCORES,
-          variables: {
-            user: {
-              id: currentUser.userIndexIdentifier,
-              age: currentUser.age,
-              gender: currentUser.gender,
-            },
-          },
+          url: 'api/prefscores',
+          uid: userData.id,
+          gender: userData.gender,
+          age: new Date().getFullYear() - userData.yob,
         }
       : null,
     fetcher
@@ -152,12 +130,7 @@ export default function Recommend() {
       </div>
       <div className={styles.bottomRow}>
         <div>
-          <AddToSavedMoviesButton
-            db={db}
-            userId={currentUser.userIndexIdentifier}
-            movieId={data[selectedMovieIndex]?.id}
-            savedMovies={userProfile?.savedMoviesById}
-          />
+          <AddToSavedMoviesButton />
           <Button
             className={styles.bottomRowButton}
             color="inherit"
