@@ -20,8 +20,7 @@ export default function Recommend() {
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
   const userData = useSelector((state) => state.firebase.profile);
   const auth = useSelector((state) => state.firebase.auth);
-  const needToRegenRecs = useSelector((state) => state.user.needToRegenRecs);
-  const savedRecommendations = [];
+  const needToRegenRecs = userData.needToRegenRecs;
 
   const RECS_TO_FETCH = 5;
   const RECS_TO_SHOW = 5;
@@ -43,13 +42,13 @@ export default function Recommend() {
       })
       .then((res) => {
         firebase.set(`users/${auth.uid}/recommendations`, res);
-        dispatch(userSlice.actions.setNeedToRegenRecs(false));
+        firebase.set(`users/${auth.uid}/needToRegenRecs`, false);
         return res;
       })
       .catch((err) => console.log(err));
 
   let { data, error } = useSWR(
-    needToRegenRecs
+    needToRegenRecs 
       ? {
           url: '/api/prefscores',
           uid: userData.id,
@@ -138,7 +137,7 @@ export default function Recommend() {
       </div>
       <div className={styles.bottomRow}>
         <div>
-          <AddToSavedMoviesButton />
+          <AddToSavedMoviesButton movieId={data[selectedMovieIndex].id} savedMoviesById={userData.savedMoviesById} />
           <Button
             className={styles.bottomRowButton}
             color="inherit"

@@ -50,7 +50,9 @@ const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
                   name: _authResult.user.displayName,
                   email: _authResult.user.email,
                   yob: 1990,
-                  gender: 1
+                  gender: 1,
+                  needToRegenRecs: true,
+                  savedMoviesById: []
                 });
             });
           firebase
