@@ -93,7 +93,7 @@ export default function Recommend() {
 
   if (error) {
     return (
-      <Container className={commonStyles.ContainerLoading}>
+      <Container sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', height:'90vh'}} >
         <h3>
           Error fetching recommendations! Please refresh the page. The developer
           responsible has been automatically fired 🥾.
@@ -104,7 +104,7 @@ export default function Recommend() {
 
   if (!data) {
     return (
-      <Container className={commonStyles.ContainerLoading}>
+      <Container sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', height:'90vh'}} >
         <CircularProgress />
         <p>Running the model for the freshest recs. This can take up to a minute, so hold on!</p>
       </Container>
