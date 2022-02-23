@@ -52,7 +52,8 @@ const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
                   yob: 1990,
                   gender: 1,
                   needToRegenRecs: true,
-                  savedMoviesById: []
+                  savedMoviesById: [],
+                  movieRatings: []
                 });
             });
           firebase

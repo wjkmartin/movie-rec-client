@@ -1,97 +1,60 @@
-import React from 'react';
-
-import { useSelector, useDispatch } from 'react-redux';
-import rateSlice from '../rateSlice';
-
-import { gql, useMutation } from '@apollo/client';
-
+import { useSelector } from 'react-redux';
 import styles from './RateButtons.module.css';
 
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
+import { getFirebase } from 'react-redux-firebase';
 
-export default function RateButtons() {
-  const movieID = useSelector((state) => state.rate.ratingMovieID);
-  const userID = useSelector((state) => state.user.userIndexIdentifier);
-  const dispatch = useDispatch();
+export default function RateButtons({ setDidRate, movieId }) {
+  const firebase = getFirebase();
+  const auth = useSelector((state) => state.firebase.auth);
 
-  const ADD_RATING = gql`
-    mutation AddMovieRating($userId: Int!, $movieId: Int!, $rating: Int!) {
-      addMovieRating(userId: $userId, id: $movieId, rating: $rating) {
-        userId
-        id
-        rating
-      }
-    }
-  `;
-
-  const [addMovieRating, { data, loading, error }] = useMutation(ADD_RATING);
-
-  if (error) {
-    console.log(error);
+  function handleRatingClick(rating) {
+    firebase.ref(`/users/${auth.uid}/ratingsById/${movieId}`).set(rating);
+    firebase.ref(`/users/${auth.uid}/movieRecordConfirmed/${movieId}`).set(true);
+    setDidRate(true);
   }
 
-  function writeUserData(userID, rating) {
-    try {
-      addMovieRating({
-        variables: {
-          userId: userID,
-          movieId: movieID,
-          rating: rating,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  function handleClick(rating) {
-    dispatch(rateSlice.actions.setDidRate(true));
-    writeUserData(userID, rating);
+  function handleNotSeenClick() {
+    firebase.ref(`/users/${auth.uid}/movieRecordConfirmed/${movieId}`).set(false);
+    setDidRate(true);
   }
 
   return (
     <div className={styles.RateButtons}>
       <div className={styles.rateButtonRow}>
-      <Button
-        variant="outlined"
-        onClick={() => {
-          handleClick(5);
-        }}
-      >
-        <span className={styles.rateButton__text}>Love it! ⬆</span>
-      </Button>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            handleRatingClick(5);
+          }}
+        >
+          <Typography>Love it! ⬆</Typography>
+        </Button>
       </div>
       <div className={styles.rateButtonRow}>
         <Button
           variant="outlined"
           onClick={() => {
-            handleClick(1);
+            handleRatingClick(1);
           }}
         >
-          <span className={styles.rateButton__text}>
-            ⬅ Didn&apos;t like it{' '}
-          </span>
+          <Typography>⬅ Didn&apos;t like it </Typography>
         </Button>
         <Button
-         variant="outlined"
+          variant="outlined"
           onClick={() => {
-            handleClick(3);
+            handleRatingClick(3);
           }}
         >
-          <span className={styles.rateButton__text}>Liked it ➡ </span>
+          <Typography>Liked it ➡ </Typography>
         </Button>
       </div>
       <div className={styles.rateButtonRow}>
-      <Button
-        variant="outlined"
-        onClick={() => {
-          dispatch(rateSlice.actions.setDidRate(true));
-        }}
-      >
-        <span className={styles.rateButton__text}>
-          Haven&apos;t seen it yet ⬇{' '}
-        </span>
-      </Button>
+        <Button variant="outlined" onClick={() => {
+          handleNotSeenClick();
+        }}>
+          <Typography>Haven&apos;t seen it yet ⬇ </Typography>
+        </Button>
       </div>
     </div>
   );

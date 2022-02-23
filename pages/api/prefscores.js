@@ -2,7 +2,6 @@ import fs from 'fs';
 const fsp = require('fs').promises
 
 export default async function handler(req, res) {
-  console.log('received request: ', { req });
   res
     .status(200)
     .json(
