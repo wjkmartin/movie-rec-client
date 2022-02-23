@@ -1,11 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
-import userSlice from './slices/userSlice';
 import { firebaseReducer } from 'react-redux-firebase'
 import { combineReducers } from 'redux'
 
 const rootReducer = combineReducers({
-  user: userSlice.reducer,
   firebase: firebaseReducer
 })
 
