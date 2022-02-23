@@ -90,7 +90,7 @@ export default function Rate() {
     );
   } else
     return (
-      <Container sx={{display: 'flex', justifyContent: 'center'}} >
+      <Container sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', height:'90vh'}} >
         <CircularProgress />
       </Container>
     );
