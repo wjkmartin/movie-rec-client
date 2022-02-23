@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '@mui/material';
-import styles from './AddToSavedMoviesButton.module.css';
+import { Button, Stack, Typography } from '@mui/material';
+import styles from './AddToSavedButton.module.css';
 import { getFirebase } from 'react-redux-firebase';
 import { useSelector } from 'react-redux';
+import { Favorite } from '@mui/icons-material';
 
-const AddToSavedMoviesButton = ({ movieId, savedMoviesById=[] }) => {
+const AddToSavedButton = ({ movieId, savedMoviesById = [] }) => {
   const [isSaved, setIsSaved] = useState(false);
   const firebase = getFirebase();
   const auth = useSelector((state) => state.firebase.auth);
@@ -31,19 +32,19 @@ const AddToSavedMoviesButton = ({ movieId, savedMoviesById=[] }) => {
   };
 
   return (
-    <Button
-      className={`${styles.AddToSavedMoviesButton} ${
-        isSaved ? styles.isSaved : ''
-      }`}
-      color="inherit"
-      variant="text"
-      onClick={handleClick}
-    >
-      <span>
-        {isSaved ? '✔ Added to saved movies' : 'Add to my saved movies'}
-      </span>
+    <Button variant="text" onClick={handleClick}>
+      <Stack spacing={1} direction="row">
+        <Favorite
+          sx={{ color: isSaved ? 'success.main' : 'text.primary' }}
+        />
+        <Typography
+          sx={{ color: isSaved ? 'success.main' : 'text.primary' }}
+        >
+          {isSaved ? 'SAVED' : 'ADD TO SAVED'}
+        </Typography>
+      </Stack>
     </Button>
   );
 };
 
-export default AddToSavedMoviesButton;
+export default AddToSavedButton;

@@ -34,6 +34,15 @@ function MyApp({ Component, pageProps }) {
   const theme = createTheme({
     palette: {
       mode: 'dark',
+      primary: {
+        main: '#ff9800',
+      },
+      secondary: {
+        main: '#ff9800',
+      },
+      success: {
+        main: '#009688',
+      },
     },
   });
 

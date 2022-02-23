@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getFirebase, useFirebaseConnect } from 'react-redux-firebase';
 import userSlice from '../slices/userSlice';
 import { getMovieData } from '../services/rec/tmdb';
-import MovieBlock from '../components/common/MovieBlock';
+import MovieBlock from '../components/common/MovieBlock/MovieBlock';
 
 import useSWR from 'swr';
 
-import AddToSavedMoviesButton from '../components/_Recommend/AddToSavedMoviesButton';
+import AddToSavedButton from '../components/common/AddToSavedButton/AddToSavedButton';
 
 import { Fab, Container, Button, CircularProgress } from '@mui/material';
 import { ArrowBack, ArrowForward, Add, Visibility } from '@mui/icons-material';
@@ -137,7 +137,7 @@ export default function Recommend() {
       </div>
       <div className={styles.bottomRow}>
         <div>
-          <AddToSavedMoviesButton movieId={data[selectedMovieIndex].id} savedMoviesById={userData.savedMoviesById} />
+          <AddToSavedButton movieId={data[selectedMovieIndex].id} savedMoviesById={userData.savedMoviesById} />
           <Button
             className={styles.bottomRowButton}
             color="inherit"
