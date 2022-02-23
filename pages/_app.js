@@ -16,6 +16,7 @@ import 'firebase/compat/firestore'
 
 import { fbConfig } from '../config';
 
+import HeadComponent from '../components/Head/Head';
 import Header from '../components/Header/Header';
 
 firebase.initializeApp(fbConfig);
@@ -50,6 +51,7 @@ function MyApp({ Component, pageProps }) {
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <ReactReduxFirebaseProvider {...rrfProps}>
+          <HeadComponent />
           <Header />
           <CssBaseline />
             <Component {...pageProps} />
