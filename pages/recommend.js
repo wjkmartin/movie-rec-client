@@ -20,10 +20,8 @@ export default function Recommend() {
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
   const userData = useSelector((state) => state.firebase.profile);
   const auth = useSelector((state) => state.firebase.auth);
-  const needToRegenRecs = userData.needToRegenRecs;
 
-  const RECS_TO_FETCH = 5;
-  const RECS_TO_SHOW = 5;
+  const RECS_TO_FETCH = 50;
 
   const fetcher = ({ url, uid, gender, age }) =>
     fetch(`${url}?uid=${uid}&gender=${gender}&age=${age}`, {
@@ -48,7 +46,7 @@ export default function Recommend() {
       .catch((err) => console.log(err));
 
   let { data, error } = useSWR(
-    needToRegenRecs 
+    userData.needToRegenRecs 
       ? {
           url: '/api/prefscores',
           uid: userData.id,
@@ -109,7 +107,7 @@ export default function Recommend() {
     return (
       <Container className={commonStyles.ContainerLoading}>
         <CircularProgress />
-        <p>Running the model for the freshest recs</p>
+        <p>Running the model for the freshest recs. This can take up to a minute, so hold on!</p>
       </Container>
     );
   }
