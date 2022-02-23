@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { signOut } from 'firebase/auth';
 
@@ -21,10 +21,8 @@ import FirebaseConnector from './FirebaseConnector/FirebaseConnector';
 
 const UserArea = ({ isSignedIn, auth }) => {
   const settings = ['Profile', 'Logout'];
+  const authUser = useSelector((state) => state.firebase.auth);
   
-  
-  const loginOptions = '';
-  const dispatch = useDispatch();
 
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -66,7 +64,7 @@ const UserArea = ({ isSignedIn, auth }) => {
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Open settings">
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+            <Avatar alt="User Avatar" src={authUser.photoURL} />
           </IconButton>
         </Tooltip>
         <Menu

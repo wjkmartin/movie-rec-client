@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import HeaderLink from './HeaderLink';
 
-import styles from './Header.module.css';
-
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { getAuth } from 'firebase/auth';
 
@@ -19,7 +16,11 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import UserArea from './UserArea/UserArea';
-import { useFirebaseConnect } from 'react-redux-firebase';
+
+import SvgIcon from '@mui/material/SvgIcon';
+
+import logo from '../../public/logo.svg';
+import Image from 'next/image';
 
 const pages = [
   ['Get recs', '/recommend'],
@@ -27,12 +28,9 @@ const pages = [
   ['Rate', '/rate'],
 ];
 
-
-
 const Header = () => {
-  const dispatch = useDispatch();
   const auth = getAuth();
-  
+
   const authLoaded = useSelector((state) => state.firebase.auth.isLoaded);
   const authEmpty = useSelector((state) => state.firebase.auth.isEmpty);
   const isSignedIn = authLoaded && !authEmpty;
@@ -50,14 +48,14 @@ const Header = () => {
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        <Toolbar >
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
-            LOGO
+            <SvgIcon inheritViewBox component={logo} />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -89,9 +87,11 @@ const Header = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {(isSignedIn ? pages : []).map(([name, href]) => (
+                <MenuItem key={name} onClick={handleCloseNavMenu}>
+                  <Link href={href}>
+                    <Typography textAlign="center">{name}</Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -102,10 +102,10 @@ const Header = () => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
-            LOGO
+            <SvgIcon inheritViewBox component={logo} />
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {(isSignedIn ? pages :[]).map((page) => (
+            {(isSignedIn ? pages : []).map((page) => (
               <Link key={`link__${page[0]}`} href={page[1]}>
                 <Button
                   key={`button__${page[0]}`}
@@ -117,7 +117,6 @@ const Header = () => {
               </Link>
             ))}
           </Box>
-
           <UserArea isSignedIn={isSignedIn} auth={auth} />
         </Toolbar>
       </Container>
