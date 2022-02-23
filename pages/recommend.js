@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getFirebase, useFirebaseConnect } from 'react-redux-firebase';
-import userSlice from '../slices/userSlice';
 import { getMovieData } from '../services/rec/tmdb';
 import MovieBlock from '../components/common/MovieBlock/MovieBlock';
 
@@ -45,7 +44,7 @@ export default function Recommend() {
       })
       .catch((err) => console.log(err));
 
-  let { data, error } = useSWR(
+  let { data, error,  } = useSWR(
     userData.needToRegenRecs 
       ? {
           url: '/api/prefscores',
