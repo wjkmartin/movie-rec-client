@@ -26,6 +26,7 @@ import AddToSavedButton from '../AddToSavedButton/AddToSavedButton';
 
 import styles from './MovieCard.module.css';
 import FindButton from '../FindButton/FindButton';
+import WatchPopup from '../WatchPopup/WatchPopup';
 
 const MovieCard = ({ movieId }) => {
   const profile = useSelector((state) => state.firebase.profile);
@@ -37,6 +38,7 @@ const MovieCard = ({ movieId }) => {
   };
 
   const [movieData, setMovieData] = useState(null);
+  const [watchPopupOpen, setWatchPopupOpen] = useState(false);
 
   useEffect(() => {
     getMovieDataById(movieId).then((res) => {
@@ -76,11 +78,12 @@ const MovieCard = ({ movieId }) => {
   const handleFavoriteClick = () => {};
 
   const handleFindClick = () => {
-    // show the popup and set local state to the id
+    setWatchPopupOpen(true);
   };
 
   if (movieData) {
     return (
+      <>
       <Card sx={{ maxWidth: 800 }}>
         <CardHeader
           sx={{ paddingBottom: 0 }}
@@ -131,7 +134,9 @@ const MovieCard = ({ movieId }) => {
               movieId={movieData.id}
               savedMoviesById={profile.savedMoviesById}
             />
-            <FindButton movieId={movieData.id} />
+            <FindButton onClick={
+              handleFindClick
+            } movieId={movieData.id} />
           </Stack>
           <ExpandMore
             expand={expanded}
@@ -143,6 +148,8 @@ const MovieCard = ({ movieId }) => {
           </ExpandMore>
         </CardActions>
       </Card>
+      <WatchPopup open={watchPopupOpen} setOpen={setWatchPopupOpen} movieData={movieData} />
+      </>
     );
   } else {
     return <CircularProgress />;

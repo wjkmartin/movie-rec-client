@@ -1,13 +1,10 @@
 import { AllOut } from '@mui/icons-material';
 import { Button, Stack, Typography } from '@mui/material';
 
-const FindButton = ({ movieId }) => {
-  const handleClick = () => {
-      
-  };
+const FindButton = ({ onClick }) => {
 
   return (
-    <Button variant="text" onClick={handleClick}>
+    <Button variant="text" onClick={onClick}>
       <Stack spacing={1} direction="row">
         <AllOut />
         <Typography>FIND</Typography>
