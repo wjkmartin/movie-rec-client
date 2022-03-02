@@ -2,6 +2,8 @@ import { useSelector } from 'react-redux';
 import commonStyles from '../styles/common.module.css';
 import Container from '@mui/material/Container';
 import SavedMoviesContainer from '../components/_Index/SavedMoviesContainer/SavedMoviesContainer';
+import { Typography } from '@mui/material';
+import styles from '../styles/Home.module.css';
 
 export default function Home() {
   const auth = useSelector((state) => state.firebase.auth);
@@ -13,6 +15,14 @@ export default function Home() {
       </Container>
     );
   } else {
-    return (<p>hero area</p>);
+    return (
+      <Container>
+        <Typography sx={{ mx: 'auto',  px: 20, fontSize: 70, fontWeight: 'bold', textAlign: 'center'}}>
+          Stop wasting your time looking for movies and just find ones you'll
+          like.
+        </Typography>
+        <Typography sx={{ mx: 'auto', px: 20, mt: 5, fontSize: 70, fontWeight: 'bold', textAlign: 'center'}}>With <span className={styles.rainbowText}>machine learning.</span></Typography>
+      </Container>
+    );
   }
 }

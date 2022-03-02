@@ -1,0 +1,65 @@
+.rainbowText {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background: red; 
+  background: -webkit-linear-gradient(
+    left,
+    orange,
+    yellow,
+    green,
+    cyan,
+    blue,
+    violet,
+    red
+  );
+  background: -o-linear-gradient(
+    right,
+    orange,
+    yellow,
+    green,
+    cyan,
+    blue,
+    violet,
+    red
+  );
+  background: -moz-linear-gradient(
+    right,
+    orange,
+    yellow,
+    green,
+    cyan,
+    blue,
+    violet,
+    red
+  );
+  background: linear-gradient(
+    to right,
+    orange,
+    yellow,
+    green,
+    cyan,
+    blue,
+    violet,
+    red
+  );
+
+  background-size: 200% 200%;
+  background-position: 0% 100%;
+  animation: rainbow 10s infinite alternate ease-in-out both;
+}
+
+@keyframes rainbow {
+  0% {
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-position: 0% 50%;
+  }
+  100% {
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-position: 100% 50%;
+  }
+}
