@@ -17,9 +17,8 @@ export default function Home() {
   } else {
     return (
       <Container>
-        <Typography sx={{ mx: 'auto',  px: 20, fontSize: 70, fontWeight: 'bold', textAlign: 'center'}}>
-          Stop wasting your time looking for movies and just find ones you'll
-          like.
+        <Typography sx={{ mx: 'auto',  px: 20, mt: 5, fontSize: 70, fontWeight: 'bold', textAlign: 'center'}}>
+          Stop wasting your time looking for good movies and start watching them.
         </Typography>
         <Typography sx={{ mx: 'auto', px: 20, mt: 5, fontSize: 70, fontWeight: 'bold', textAlign: 'center'}}>With <span className={styles.rainbowText}>machine learning.</span></Typography>
       </Container>
