@@ -21,6 +21,7 @@ import SvgIcon from '@mui/material/SvgIcon';
 
 import logo from '../../public/logo.svg';
 import Image from 'next/image';
+import { Stack } from '@mui/material';
 
 const pages = [
   ['Get recs', '/recommend'],
@@ -48,14 +49,19 @@ const Header = () => {
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
-        <Toolbar >
+        <Toolbar>
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
+            <Stack sx={{display: 'flex', alignItems:'center'}} spacing={2} direction='row'>
             <SvgIcon inheritViewBox component={logo} />
+            <Typography variant="h6" noWrap color='primary'>
+              MovieRec
+            </Typography>
+            </Stack>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
