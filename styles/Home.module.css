@@ -46,7 +46,7 @@
 
   background-size: 200% 200%;
   background-position: 0% 100%;
-  animation: rainbow 10s infinite alternate ease-in-out both;
+  animation: rainbow 6s infinite alternate ease-in-out both;
 }
 
 @keyframes rainbow {
