@@ -9,9 +9,10 @@ import useSWR from 'swr';
 import AddToSavedButton from '../components/common/AddToSavedButton/AddToSavedButton';
 
 import { Fab, Container, Button, CircularProgress } from '@mui/material';
-import { ArrowBack, ArrowForward, Add, Visibility } from '@mui/icons-material';
+import { ArrowBack, ArrowForward, Add } from '@mui/icons-material';
 import commonStyles from '../styles/common.module.css';
 import styles from '../styles/Rec.module.css';
+import SeenItButton from '../components/_Recommend/SeenItButton/SeenItButton';
 
 export default function Recommend() {
   const dispatch = useDispatch();
@@ -44,8 +45,8 @@ export default function Recommend() {
       })
       .catch((err) => console.log(err));
 
-  let { data, error,  } = useSWR(
-    userData.needToRegenRecs 
+  let { data, error } = useSWR(
+    userData.needToRegenRecs
       ? {
           url: '/api/prefscores',
           uid: userData.id,
@@ -57,8 +58,8 @@ export default function Recommend() {
   );
 
   if (!data) {
-    data = userData.recommendations
-  } 
+    data = userData.recommendations;
+  }
 
   const getDataForMovieAndAppendScore = async (movieId, score) => {
     console.log('fetching details for movie: ', movieId);
@@ -93,7 +94,14 @@ export default function Recommend() {
 
   if (error) {
     return (
-      <Container sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', height:'90vh'}} >
+      <Container
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '90vh',
+        }}
+      >
         <h3>
           Error fetching recommendations! Please refresh the page. The developer
           responsible has been automatically fired 🥾.
@@ -104,9 +112,19 @@ export default function Recommend() {
 
   if (!data) {
     return (
-      <Container sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', height:'90vh'}} >
+      <Container
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '90vh',
+        }}
+      >
         <CircularProgress />
-        <p>Running the model for the freshest recs. This can take up to a minute, so hold on!</p>
+        <p>
+          Running the model for the freshest recs. This can take up to a minute,
+          so hold on!
+        </p>
       </Container>
     );
   }
@@ -134,15 +152,11 @@ export default function Recommend() {
       </div>
       <div className={styles.bottomRow}>
         <div>
-          <AddToSavedButton movieId={data[selectedMovieIndex].id} savedMoviesById={userData.savedMoviesById} />
-          <Button
-            className={styles.bottomRowButton}
-            color="inherit"
-            variant="text"
-          >
-            <Visibility />
-            <span>Seen it!</span>
-          </Button>
+          <AddToSavedButton
+            movieId={data[selectedMovieIndex].id}
+            savedMoviesById={userData.savedMoviesById}
+          />
+          <SeenItButton movieId={data[selectedMovieIndex].id}/>
         </div>
         <p>
           Pref score (higher is better):{' '}

@@ -3,7 +3,7 @@ import { Button, Stack, Typography } from '@mui/material';
 import styles from './AddToSavedButton.module.css';
 import { getFirebase } from 'react-redux-firebase';
 import { useSelector } from 'react-redux';
-import { Favorite } from '@mui/icons-material';
+import { Star } from '@mui/icons-material';
 
 const AddToSavedButton = ({ movieId, savedMoviesById = [] }) => {
   const [isSaved, setIsSaved] = useState(false);
@@ -34,7 +34,7 @@ const AddToSavedButton = ({ movieId, savedMoviesById = [] }) => {
   return (
     <Button variant="text" onClick={handleClick}>
       <Stack spacing={1} direction="row">
-        <Favorite
+        <Star
           sx={{ color: isSaved ? 'success.main' : 'text.primary' }}
         />
         <Typography
