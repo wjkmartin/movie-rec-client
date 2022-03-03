@@ -1,7 +1,7 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['image.tmdb.org'],
+    domains: ['image.tmdb.org', 'purecatamphetamine.github.io'],
   },
   serverRuntimeConfig: {
     PROJECT_ROOT: __dirname

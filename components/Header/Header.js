@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 
 import { useSelector } from 'react-redux';
@@ -20,8 +20,8 @@ import UserArea from './UserArea/UserArea';
 import SvgIcon from '@mui/material/SvgIcon';
 
 import logo from '../../public/logo.svg';
-import Image from 'next/image';
 import { Stack } from '@mui/material';
+import RegionSelectDropdown from './RegionSelectDropdown/RegionSelectDropdown';
 
 const pages = [
   ['Get recs', '/recommend'],
@@ -123,6 +123,7 @@ const Header = () => {
               </Link>
             ))}
           </Box>
+          {isSignedIn ? <RegionSelectDropdown /> : null}
           <UserArea isSignedIn={isSignedIn} auth={auth} />
         </Toolbar>
       </Container>

@@ -1,7 +1,7 @@
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import React from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -13,7 +13,6 @@ import {
 const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
   const dispatch = useDispatch();
   const firebase = useFirebase();
-  const auth = useSelector((state) => state.firebase.auth);
 
   const uiConfig = {
     signInFlow: 'popup',
@@ -51,6 +50,7 @@ const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
                   email: _authResult.user.email,
                   yob: 1990,
                   gender: 1,
+                  region: 'dadad',
                   needToRegenRecs: true,
                   savedMoviesById: [],
                   movieRatings: []
