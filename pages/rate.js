@@ -3,8 +3,6 @@ import useSWR from 'swr';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import styles from '../styles/Rate.module.css';
-
 import { Button, Container, CircularProgress } from '@mui/material';
 
 import MovieBlock from '../components/common/MovieBlock/MovieBlock';

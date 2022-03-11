@@ -7,7 +7,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
-import { createFirestoreInstance } from 'redux-firestore';
 
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
@@ -18,6 +17,8 @@ import { fbConfig } from '../config';
 
 import HeadComponent from '../components/Head/Head';
 import Header from '../components/Header/Header';
+
+import theme from '../styles/theme';
 
 firebase.initializeApp(fbConfig);
 
@@ -32,20 +33,7 @@ const rrfProps = {
 };
 
 function MyApp({ Component, pageProps }) {
-  const theme = createTheme({
-    palette: {
-      mode: 'dark',
-      primary: {
-        main: '#ff9800',
-      },
-      secondary: {
-        main: '#ff9800',
-      },
-      success: {
-        main: '#009688',
-      },
-    },
-  });
+  
 
   return (
     <ThemeProvider theme={theme}>

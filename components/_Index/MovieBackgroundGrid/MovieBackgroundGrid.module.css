@@ -1,0 +1,51 @@
+.MovieBackgroundGrid {
+  position: absolute;
+  overflow: hidden;
+  top: 100px;
+  -webkit-transform: perspective(200px) rotateY(-4deg) translatez(0)
+    translatex(-80px);
+  -moz-transform: perspective(200px) rotateY(-4deg) translatez(0)
+    translatex(-80px);
+  -ms-transform: perspective(200px) rotateY(-4deg) translatez(0)
+    translatex(-80px);
+  transform: perspective(200px) rotateY(-4deg) translatez(0) translatex(-80px);
+  transform-origin: right center;
+  z-index: -1;
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 50%,
+    black 10%,
+    rgba(0, 0, 0, 0.1) 50%
+  );
+  mask-image: radial-gradient(
+    circle at 50% 50%,
+    black 10%,
+    rgba(0, 0, 0, 0.1) 50%
+  );
+  -webkit-mask-position: 0% 50%;
+  mask-position: 0% 50%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 200% 200%;
+  mask-size: 200% 200%;
+  width: 100%;
+}
+
+.MovieBackgroundGrid__wrapper {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: 1fr 1fr 1fr;
+  width: fit-content;
+  line-height: 0;
+}
+
+.MovieBackgroundGrid__poster {
+  overflow: hidden;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+}

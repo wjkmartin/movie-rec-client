@@ -63,3 +63,9 @@
     background-position: 100% 50%;
   }
 }
+
+.heroContainer {
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+}
