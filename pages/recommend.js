@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getFirebase, useFirebaseConnect } from 'react-redux-firebase';
+import { getFirebase } from 'react-redux-firebase';
 import { getMovieData } from '../services/rec/tmdb';
 import MovieBlock from '../components/common/MovieBlock/MovieBlock';
 
@@ -70,7 +70,7 @@ export default function Recommend() {
     }
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { 
     if (movieData && movieData.some((r) => moviesToHide.indexOf(r.id) >= 0)) {
       setMovieData(
         movieData.filter((movie) => moviesToHide.includes(movie.id) === false)
