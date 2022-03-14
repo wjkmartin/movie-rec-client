@@ -52,6 +52,9 @@ export default function Recommend() {
       })
       .catch((err) => console.log(err));
 
+
+  console.log({userId: userData.id, userGender: userData.gender, age: new Date().getFullYear() - userData.yob})
+
   let { data, error } = useSWR(
     userData.needToRegenRecs
       ? {
