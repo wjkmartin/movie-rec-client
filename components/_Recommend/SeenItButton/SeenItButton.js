@@ -30,21 +30,21 @@ export default function SeenItButton({ movieId, setDidRate }) {
             handleRatingClick(3);
           }}
         >
-          <ThumbUpSharp />
+          <ThumbUpSharp sx={{userSelect:'none'}}/>
         </Button>
         <Button
           onClick={() => {
             handleRatingClick(5);
           }}
         >
-          <Favorite />
+          <Favorite sx={{userSelect:'none'}}/>
         </Button>
         <Button
           onClick={() => {
             handleRatingClick(1);
           }}
         >
-          <ThumbDownSharp  />
+          <ThumbDownSharp sx={{userSelect:'none'}} />
         </Button>
       </Stack>
     );

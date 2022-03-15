@@ -88,7 +88,9 @@ export default function Recommend() {
   useEffect(() => {
     if (didRate) {
       setDidRate(false);
-      firebase.ref(`/users/${auth.uid}/moviesToNotRecommend`).push(movieData[selectedMovieIndex].id);
+      firebase
+        .ref(`/users/${auth.uid}/moviesToNotRecommend`)
+        .push(movieData[selectedMovieIndex].id);
       setMovieData(
         movieData.filter((movie) => moviesToHide.includes(movie.id) === false)
       );
@@ -172,17 +174,38 @@ export default function Recommend() {
     );
   }
 
+  const bottomRow = (
+    <Stack direction="row" sx={{mt: 2, display:'flex', alignItems:'center', justifyContent:'space-around', width: "100%"}}>
+      <div>
+        <AddToSavedButton
+          movieId={movieData[selectedMovieIndex].id}
+          savedMoviesById={userData.savedMoviesById}
+        />
+        <SeenItButton
+          movieId={movieData[selectedMovieIndex].id}
+          setDidRate={setDidRate}
+        />
+        <DontRecButton movieId={movieData[selectedMovieIndex].id} />
+      </div>
+      <p>
+        Pref score (higher is better):{' '}
+        {String(movieData[selectedMovieIndex]?.prefScore)}
+      </p>
+    </Stack>
+  );
+
   return (
     <Container>
       <MovieBlock
         moviePrefIndex={selectedMovieIndex}
         movie={movieData[selectedMovieIndex]}
+        children={bottomRow}
       />
       <div className={styles.buttonContainerForBack}>
         <Fab
           className={styles.buttonForBack}
           onClick={() => handlePreviousButton()}
-          color="default"
+          color="primary"
           aria-label="add"
         >
           <ArrowBack />
@@ -190,28 +213,11 @@ export default function Recommend() {
         <Fab
           className={styles.buttonForBack}
           onClick={() => handleNextButton()}
-          color="default"
+          color="primary"
           aria-label="add"
         >
           <ArrowForward />
         </Fab>
-      </div>
-      <div className={styles.bottomRow}>
-        <div>
-          <AddToSavedButton
-            movieId={movieData[selectedMovieIndex].id}
-            savedMoviesById={userData.savedMoviesById}
-          />
-          <SeenItButton
-            movieId={movieData[selectedMovieIndex].id}
-            setDidRate={setDidRate}
-          />
-          <DontRecButton movieId={movieData[selectedMovieIndex].id} />
-        </div>
-        <p>
-          Pref score (higher is better):{' '}
-          {String(movieData[selectedMovieIndex]?.prefScore)}
-        </p>
       </div>
     </Container>
   );
