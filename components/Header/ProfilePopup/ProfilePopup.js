@@ -8,6 +8,7 @@ import {
   MenuItem,
   Stack,
   Button,
+  Typography,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { getFirebase } from 'react-redux-firebase';
@@ -48,6 +49,7 @@ export const ProfilePopup = ({ open, setProfileDialogueVisible }) => {
     <Dialog open={Boolean(open)}>
       <DialogTitle>Profile</DialogTitle>
       <DialogContent>
+        <Typography>Hi, {auth.displayName}</Typography>
         <Box component="form" noValidate autoComplete="off">
           <Stack sx={{ marginTop: 1 }} spacing={2}>
             <TextField

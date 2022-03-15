@@ -1,9 +1,9 @@
-.MovieBlock {
+.flexColumnCentered {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    margin-top: 1rem;
+    align-items: center;
+    overflow-x: hidden;
 }
 
 .movieBlock__body {
@@ -12,6 +12,9 @@
     align-items: center;
     justify-content: center;
     height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    
 }
 
 .movieBlock__description {

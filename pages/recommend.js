@@ -26,6 +26,7 @@ export default function Recommend() {
   const RECS_TO_FETCH = 100;
 
   const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
+  const [didRate, setDidRate] = useState(false);
   const [movieData, setMovieData] = useState(null);
 
   const fetcher = ({ url, uid, gender, age }) =>
@@ -45,6 +46,7 @@ export default function Recommend() {
         return populateDataForPrefscoresArray(processedData);
       })
       .then((res) => {
+        console.log(res.length);
         firebase.set(`users/${auth.uid}/recommendations`, res);
         firebase.set(`users/${auth.uid}/needToRegenRecs`, false);
         setMovieData(res);
@@ -52,14 +54,11 @@ export default function Recommend() {
       })
       .catch((err) => console.log(err));
 
-
-  console.log({userId: userData.id, userGender: userData.gender, age: new Date().getFullYear() - userData.yob})
-
   let { data, error } = useSWR(
     userData.needToRegenRecs
       ? {
           url: '/api/prefscores',
-          uid: userData.id,
+          uid: userData.id - 1,
           gender: userData.gender,
           age: new Date().getFullYear() - userData.yob,
         }
@@ -70,10 +69,11 @@ export default function Recommend() {
   useEffect(() => {
     if (!data && !movieData) {
       setMovieData(userData.recommendations);
+      data = userData.recommendations;
     }
   }, []);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (movieData && movieData.some((r) => moviesToHide.indexOf(r.id) >= 0)) {
       setMovieData(
         movieData.filter((movie) => moviesToHide.includes(movie.id) === false)
@@ -84,6 +84,16 @@ export default function Recommend() {
       // handle case where you are on the last movie and you click the do not show button
     }
   }, [moviesToHide]);
+
+  useEffect(() => {
+    if (didRate) {
+      setDidRate(false);
+      firebase.ref(`/users/${auth.uid}/moviesToNotRecommend`).push(movieData[selectedMovieIndex].id);
+      setMovieData(
+        movieData.filter((movie) => moviesToHide.includes(movie.id) === false)
+      );
+    }
+  }, [didRate]);
 
   const getDataForMovieAndAppendScore = async (movieId, score) => {
     console.log('fetching details for movie: ', movieId);
@@ -144,7 +154,14 @@ export default function Recommend() {
           height: '90vh',
         }}
       >
-        <Stack spacing={4} sx={{display: 'flex', flexDirection: 'column' ,alignItems: 'center'}}>
+        <Stack
+          spacing={4}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
           <CircularProgress />
           <p>
             Running the model for the freshest recs. This can take up to a
@@ -185,7 +202,10 @@ export default function Recommend() {
             movieId={movieData[selectedMovieIndex].id}
             savedMoviesById={userData.savedMoviesById}
           />
-          <SeenItButton movieId={movieData[selectedMovieIndex].id} />
+          <SeenItButton
+            movieId={movieData[selectedMovieIndex].id}
+            setDidRate={setDidRate}
+          />
           <DontRecButton movieId={movieData[selectedMovieIndex].id} />
         </div>
         <p>

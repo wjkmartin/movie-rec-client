@@ -9,18 +9,17 @@ import { Button, Stack, Typography, Tooltip } from '@mui/material';
 import { getFirebase } from 'react-redux-firebase';
 import { useSelector } from 'react-redux';
 
-export default function SeenItButton({ movieId }) {
+export default function SeenItButton({ movieId, setDidRate }) {
   const firebase = getFirebase();
   const auth = useSelector((state) => state.firebase.auth);
 
-  const [ratingSelected, setRatingSelected] = useState(null);
-
   function handleRatingClick(rating) {
-    setRatingSelected(rating);
     firebase.ref(`/users/${auth.uid}/ratingsById/${movieId}`).set(rating);
     firebase
       .ref(`/users/${auth.uid}/movieRecordConfirmed/${movieId}`)
       .set(true);
+    setDidRate(true);
+    console.log('rated on rec page')
   }
 
   const RateModal = forwardRef(function RateModal(props, ref) {
@@ -31,21 +30,21 @@ export default function SeenItButton({ movieId }) {
             handleRatingClick(3);
           }}
         >
-          <ThumbUpSharp color={ratingSelected === 3 ? 'primary' : ''} />
+          <ThumbUpSharp />
         </Button>
         <Button
           onClick={() => {
             handleRatingClick(5);
           }}
         >
-          <Favorite color={ratingSelected === 5 ? 'primary' : ''} />
+          <Favorite />
         </Button>
         <Button
           onClick={() => {
             handleRatingClick(1);
           }}
         >
-          <ThumbDownSharp color={ratingSelected === 1 ? 'primary' : ''} />
+          <ThumbDownSharp  />
         </Button>
       </Stack>
     );
