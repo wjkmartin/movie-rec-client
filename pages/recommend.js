@@ -78,10 +78,6 @@ export default function Recommend() {
       setMovieData(
         movieData.filter((movie) => moviesToHide.includes(movie.id) === false)
       );
-      // setSelectedMovieIndex(
-      //   selectedMovieIndex === movieData.length - 1 ? 0 : selectedMovieIndex + 1
-      // );
-      // handle case where you are on the last movie and you click the do not show button
     }
   }, [moviesToHide]);
 
