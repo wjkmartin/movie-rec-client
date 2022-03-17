@@ -6,11 +6,9 @@ import { useDispatch } from 'react-redux';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import {
-  useFirebase,
-} from 'react-redux-firebase';
+import { useFirebase } from 'react-redux-firebase';
 
-const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
+const LoginBlock = ({ onClose, open }) => {
   const dispatch = useDispatch();
   const firebase = useFirebase();
 
@@ -24,6 +22,10 @@ const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
         return false;
       },
     },
+  };
+
+  const handleClose = () => {
+    onClose(false);
   };
 
   async function handleSignIn(_authResult) {
@@ -53,7 +55,7 @@ const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
                   region: 'dadad',
                   needToRegenRecs: true,
                   savedMoviesById: [],
-                  movieRatings: []
+                  movieRatings: [],
                 });
             });
           firebase
@@ -71,7 +73,7 @@ const LoginBlock = ({ onClose, open, setLoginDialogueVisible }) => {
   }
 
   return (
-    <Dialog open={Boolean(open)}>
+    <Dialog sx={{position: 'absolute'}} open={open} onClose={handleClose}>
       <DialogTitle>Choose login method</DialogTitle>
       <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     </Dialog>

@@ -108,7 +108,7 @@ const UserArea = ({ isSignedIn, auth }) => {
           setLoginDialogueVisible={setLoginDialogueVisible}
         />
         <LoginBlock
-          setLoginDialogueVisible={setLoginDialogueVisible}
+          onClose={setLoginDialogueVisible}
           open={loginDialogueVisible}
         />
       </>
