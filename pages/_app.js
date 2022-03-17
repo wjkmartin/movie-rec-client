@@ -32,9 +32,8 @@ const rrfProps = {
   dispatch: store.dispatch,
 };
 
-function MyApp({ Component, pageProps }) {
+function App({ Component, pageProps }) {
   
-
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
@@ -49,4 +48,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+export default App;

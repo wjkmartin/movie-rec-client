@@ -6,7 +6,7 @@ import { Typography, Stack } from '@mui/material';
 import styles from '../styles/Home.module.css';
 import MovieBackgroundGrid from '../components/_Index/MovieBackgroundGrid/MovieBackgroundGrid';
 
-export default function Home({ moviePosters }) {
+export default function Index({ moviePosters }) {
   const auth = useSelector((state) => state.firebase.auth);
   const loggedIn = auth.isLoaded && !auth.isEmpty;
   if (loggedIn) {
